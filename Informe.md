@@ -28,5 +28,7 @@ _Definir: DataFrame, Arboles binarios_
 
 ![Diagrama de Clases](descarga.jpg)
 
+data frame, filas, columnas, index
+
 ### Cronograma de Trabajo
 _Referente a los milestone_
