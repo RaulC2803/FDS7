@@ -25,7 +25,7 @@ _Definir: DataFrame, Arboles binarios_
 
 ### Diagrama de clases (alto nivel)
 
-![Diagrama de Clases](descarga.jpg)
+![Diagrama de Clases](DataFrame.png)
 
 data frame, filas, columnas, index
 
