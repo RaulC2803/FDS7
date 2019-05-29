@@ -1,8 +1,7 @@
 Algoritmos y Estructura de Datos
 ********************************
 
-Trabajo Final
-*************
+# Trabajo Final
 
 ### Equipo de Trabajo
 
