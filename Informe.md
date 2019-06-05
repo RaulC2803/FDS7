@@ -70,8 +70,8 @@ Dichas tareas son las siguientes:
         * Raúl Casanova se encargará de:
             * Diseñar los archivos a utilizar
             * Implemetar componentes de diseño
+            
         * Diego Bazán se encargará de:
             * Implementar la persisntencia del software
             * El diseño general del software
     
-_Referente a los milestone_
