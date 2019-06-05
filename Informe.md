@@ -24,8 +24,8 @@ analizar, diseñar, describir y solución
 todos los objetivos deben de tener un solo verbo, y estos deben de tener precedencia (taxonomía de bloom)
 
 ## Marco Conceptual
-![Data Frame](Marco Conceptual Data Frame.png)
-![Arboles Binarios](Marco Conceptual Arboles Binarios.PNG)
+![Data Frame](MarcoConceptualDataFrame.PNG)
+![Arboles Binarios](MarcoConceptualArbolesBinario.PNG)
 
 
 _Definir: DataFrame, Arboles binarios_
