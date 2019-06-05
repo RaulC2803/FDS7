@@ -17,10 +17,10 @@ Algoritmos y Estructura de Datos
 * Objetivo General:
    * Crear una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos, además de utilizar en ella estructuras de datos y métodos de ordenamiento y búsqueda.
 
-Objetivos especificos: 
-analizar, diseñar, describir y solución
-
-todos los objetivos deben de tener un solo verbo, y estos deben de tener precedencia (taxonomía de bloom)
+* Objetivos especificos: 
+   * Crear una librería en la cual se puedan importar y exportar datos, así como también a través de un dataframe se puedan visualizar, buscar y filtrar dichos datos.
+   * Evaluar los distintos tipos algoritmos de ordenamiento y determinar el más eficiente para los requerimientos del proyecto.
+   * Aplicar los conocimientos aprendidos en clase para poder resolver el problema de la manera más óptima.
 
 ## Marco Conceptual
 * Definición de Data Frame:
