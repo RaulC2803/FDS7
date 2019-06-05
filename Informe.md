@@ -15,7 +15,7 @@ Algoritmos y Estructura de Datos
 ## Objetivos
 
 * Objetivo general:
-     * Responder al problema: Crear una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos en filas y columnas.
+     * Crear una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos, además de utilizar en ellas estructura de datos y métodos de ordenamiento y búsqueda.
 
 _Objetivos especificos: analizar, diseñar, describir y solución_
 
