@@ -14,12 +14,19 @@ Algoritmos y Estructura de Datos
 
 ## Objetivos
 
-* Objetivo general:
-     * Crear una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos, además de utilizar en ella estructuras de datos y métodos de ordenamiento y búsqueda.
+* Objetivo general: Responder al problema y le da solución
 
-_Objetivos especificos: analizar, diseñar, describir y solución_
+
+
+Objetivos especificos: 
+analizar, diseñar, describir y solución
+
+todos los objetivos deben de tener un solo verbo, y estos deben de tener precedencia (taxonomía de bloom)
 
 ## Marco Conceptual
+![Data Frame](Marco Conceptual Data Frame.png)
+![Arboles Binarios](Marco Conceptual Arboles Binarios.PNG)
+
 
 _Definir: DataFrame, Arboles binarios_
 
@@ -44,7 +51,7 @@ Dichas tareas son las siguientes:
           *  Realizar Mapa Conceptual  
           
         *  Raúl Casanova se encargará de:
-            *  Realizar Objetivo General
+            *  Realizar Objetivos Generales
             *  Realizar Diagrama de clases
             *  Realizar Cronograma de Trabajo
             
