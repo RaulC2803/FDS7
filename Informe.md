@@ -14,9 +14,8 @@ Algoritmos y Estructura de Datos
 
 ## Objetivos
 
-* Objetivo general: Responder al problema y le da solución
-
-
+* Objetivo General:
+   * Crear una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos, además de utilizar en ella estructuras de datos y métodos de ordenamiento y búsqueda.
 
 Objetivos especificos: 
 analizar, diseñar, describir y solución
@@ -55,7 +54,7 @@ Dichas tareas son las siguientes:
           *  Realizar Mapa Conceptual  
           
         *  Raúl Casanova se encargará de:
-            *  Realizar Objetivos Generales
+            *  Realizar Objetivo Generale
             *  Realizar Diagrama de clases
             *  Realizar Cronograma de Trabajo
             
