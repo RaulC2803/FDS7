@@ -30,4 +30,48 @@ _Definir: DataFrame, Arboles binarios_
 data frame, filas, columnas, index
 
 ### Cronograma de Trabajo
+
+El trabajo está dividido en 3 hitos, para los cuales habrá tareas por cumplir para cada uno de los integrantes del equipo de trabajo.
+Dichas tareas son las siguientes:
+
+1. Hito 1
+
+    * Realizar Informe (Fecha de entrega: 06/06/19 - Tareas Totales: 6)
+    
+        * Diego Bazán se encargará de:
+          *  Realizar Introducción
+          *  Realizar Objetivos Específicos
+          *  Realizar Mapa Conceptual  
+          
+        *  Raúl Casanova se encargará de:
+            *  Realizar Objetivos Generales
+            *  Realizar Diagrama de clases
+            *  Realizar Cronograma de Trabajo
+            
+1. Hito 2
+
+    * Implementar (Fecha de entrega: 13/06/19 - Tareas Totales: 5)
+    
+        * Diego Bazán se encargará de:
+            * Prototipar: Diseño UI e interacción
+            * Diagrama de clases de segundo nivel
+            
+        * Raúl Casanova se encargará de:
+            * Definir TDA y las estructuras a usar
+            * Diseñar Componentes
+            
+        * Ambos se encargarán de:
+            * Implementar las clases del hito anterior (la mitad para cada uno)
+    
+1. Hito 3
+
+    * Finalizar proyecto (Fecha de entrega: 25/06/19 - Tarea Totales: 4)
+    
+        * Raúl Casanova se encargará de:
+            * Diseñar los archivos a utilizar
+            * Implemetar componentes de diseño
+        * Diego Bazán se encargará de:
+            * Implementar la persisntencia del software
+            * El diseño general del software
+    
 _Referente a los milestone_
