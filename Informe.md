@@ -14,15 +14,12 @@ Algoritmos y Estructura de Datos
 
 ## Objetivos
 
-* Objetivo general: Responder al problema y le da solución
-
-
+* Objetivo general:
+     * Responder al problema: Crear una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos en filas y columnas.
 
 _Objetivos especificos: analizar, diseñar, describir y solución_
 
-todos los objetivos deben de tener un solo verbo, y estos deben de tener precedencia (taxonomía de bloom)
-
-## Mapa Conceptual
+## Marco Conceptual
 
 _Definir: DataFrame, Arboles binarios_
 
