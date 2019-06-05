@@ -25,7 +25,7 @@ todos los objetivos deben de tener un solo verbo, y estos deben de tener precede
 
 ## Marco Conceptual
 ![Data Frame](MarcoConceptualDataFrame.PNG)
-![Arboles Binarios](MarcoConceptualArbolesBinario.PNG)
+![Arboles Binarios](MarcoConceptualArbolesBinarios.PNG)
 
 
 _Definir: DataFrame, Arboles binarios_
