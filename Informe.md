@@ -24,7 +24,13 @@ analizar, diseñar, describir y solución
 todos los objetivos deben de tener un solo verbo, y estos deben de tener precedencia (taxonomía de bloom)
 
 ## Marco Conceptual
+* Definición de Data Frame:
+DataFrame es una estructura de datos tabular bidimensional, potencialmente heterogénea, con ejes etiquetados (filas y columnas). Un dataframe es una estructura de datos bidimensional, es decir, los datos se alinean de forma tabular en filas y columnas. El dataFrame consta de tres componentes principales: los datos, las filas y las columnas.
+
 ![Data Frame](MarcoConceptualDataFrame.PNG)
+* Definición de Arboles Binarios:
+Un árbol binario es una estructura de datos en la cual cada nodo puede tener un hijo izquierdo y un hijo derecho. No pueden tener más de dos hijos (de ahí el nombre "binario"). Si algún hijo tiene como referencia a null, es decir que no almacena ningún dato, entonces este es llamado un nodo externo. En el caso contrario el hijo es llamado un nodo interno.
+
 ![Arboles Binarios](MarcoConceptualArbolesBinarios.PNG)
 
 
