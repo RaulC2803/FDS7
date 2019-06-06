@@ -33,11 +33,9 @@ Un árbol binario es una estructura de datos en la cual cada nodo puede tener un
 ![Arboles Binarios](MarcoConceptualArbolesBinarios.PNG)
 
 
-_Definir: DataFrame, Arboles binarios_
-
 ## Diagrama de clases (alto nivel)
 
-data frame, filas, columnas, index
+![DiagramaClases](DiagramaClases.PNG)
 
 ## Cronograma de Trabajo
 
