@@ -10,23 +10,23 @@ class CDatos
 {
 	string Nombre;
 	string Apellido;
-	int Año;
+	int AÃ±o;
 
 public:
 	CDatos() {
 		Nombre = "";
 		Apellido = "";
-		Año = 0;
+		AÃ±o = 0;
 	}
 
 	void MostrarDatos()
 	{
-		cout << Nombre << " " << Apellido << " nacio en " << Año;
+		cout << Nombre << " " << Apellido << " " << AÃ±o;
 	}
 
 	void setNombre(string n) { Nombre = n; }
 	void setApellido(string a) { Apellido = a; }
-	void setAño(int año) { Año = año; }
+	void setAÃ±o(int aÃ±o) { AÃ±o = aÃ±o; }
 
 };
 
@@ -63,22 +63,22 @@ public:
 		{
 			string nombre = "";
 			string apellido = "";
-			string año = "";
+			string aÃ±o = "";
 			if (Archivo.at(Archivo.size() - 3) == 'c')
 			{
 				getline(file, nombre, ',');
 				getline(file, apellido, ',');
-				getline(file, año, '\n');
+				getline(file, aÃ±o, '\n');
 			}
 			else
 			{
 				getline(file, nombre, '\t');
 				getline(file, apellido, '\t');
-				getline(file, año, '\n');
+				getline(file, aÃ±o, '\n');
 			}
 			d->at(i)->setNombre(nombre);
 			d->at(i)->setApellido(apellido);
-			d->at(i)->setAño(atoi(año.c_str()));
+			d->at(i)->setAÃ±o(atoi(aÃ±o.c_str()));
 			i++;
 		}
 		file.close();
