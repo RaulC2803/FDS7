@@ -1,9 +1,100 @@
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
 
 using namespace std;
+using namespace System;
+
+class CDatos
+{
+	string Nombre;
+	string Apellido;
+	int Año;
+
+public:
+	CDatos() {
+		Nombre = "";
+		Apellido = "";
+		Año = 0;
+	}
+
+	void MostrarDatos()
+	{
+		cout << Nombre << " " << Apellido << " nacio en " << Año;
+	}
+
+	void setNombre(string n) { Nombre = n; }
+	void setApellido(string a) { Apellido = a; }
+	void setAño(int año) { Año = año; }
+
+};
+
+class Conjunto
+{
+	vector<CDatos*>*d;
+public:
+	Conjunto() {
+		d = new vector<CDatos*>;
+	}
+	void GenerarDatos()
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			d->push_back(new CDatos());
+		}
+	}
+	void Mostrar() {
+		for (int i = 0; i < d->size(); i++)
+		{
+			d->at(i)->MostrarDatos(); cout << endl;
+		}
+	}
+
+	void LecturaDatos(string Archivo)
+	{
+		int i = 0;
+		ifstream file;
+
+		file.open(Archivo, ios::in);
+
+		if (file.fail()) { cout << "ERROR AL ABRIR EL ARCHIVO"; return; }
+
+		while (file.good() && i < d->size())
+		{
+			string nombre = "";
+			string apellido = "";
+			string año = "";
+			if (Archivo.at(Archivo.size() - 3) == 'c')
+			{
+				getline(file, nombre, ',');
+				getline(file, apellido, ',');
+				getline(file, año, '\n');
+			}
+			else
+			{
+				getline(file, nombre, '\t');
+				getline(file, apellido, '\t');
+				getline(file, año, '\n');
+			}
+			d->at(i)->setNombre(nombre);
+			d->at(i)->setApellido(apellido);
+			d->at(i)->setAño(atoi(año.c_str()));
+			i++;
+		}
+		file.close();
+	}
+};
 
 int main()
 {
-	cout << "Hola mundo";
+	string nombreArchivo;
+	cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
+	Conjunto* P = new Conjunto;
+	P->GenerarDatos();
+	P->LecturaDatos(nombreArchivo);
+	P->Mostrar();
+
+	system("pause>0");
 	return 0;
 }
