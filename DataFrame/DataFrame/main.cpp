@@ -51,14 +51,14 @@ public:
 		}
 	}
 
-	void LecturaDatos(string Archivo)
+	bool LecturaDatos(string Archivo)
 	{
 		int i = 0;
 		ifstream file;
 
 		file.open(Archivo, ios::in);
 
-		if (file.fail()) { cout << "ERROR AL ABRIR EL ARCHIVO"; return; }
+		if (file.fail()) { cout << "ERROR AL ABRIR EL ARCHIVO"; return false; }
 
 		while (file.good() && i < d->size())
 		{
@@ -83,16 +83,20 @@ public:
 			i++;
 		}
 		file.close();
+		return true;
 	}
 };
 
 int main()
 {
-	string nombreArchivo;
-	cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
 	Conjunto* P = new Conjunto;
 	P->GenerarDatos();
-	P->LecturaDatos(nombreArchivo);
+
+	string nombreArchivo;
+	do {
+		cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
+	} while (!P->LecturaDatos(nombreArchivo));
+
 	P->Mostrar();
 
 	system("pause>0");
