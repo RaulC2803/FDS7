@@ -132,6 +132,17 @@ class Tree
 		}
 	}
 
+	Node* Mayor(Node* node) {
+		if (node != nullptr) {
+			if (node->right == nullptr) {
+				return node;
+			}
+			else {
+				return node->right;
+			}
+		}
+		return nullptr;
+	}
 public:
 
 	Tree() :root(nullptr), length(0) {}
@@ -140,6 +151,12 @@ public:
 	void InOrder(std::function<void(float)>doSomething)
 	{
 		InOrder(root, doSomething);
+	}
+	float Mayor() {
+		Node* node = Mayor(root);
+		if (node != nullptr) {
+			return node->elem;
+		}
 	}
 
 };
