@@ -14,23 +14,28 @@ Algoritmos y Estructura de Datos
 
 ## Objetivos
 
-* Objetivo general: Responder al problema y le da solución
+* Objetivo General:
+   * Resolver el problema implementando una librería en C++ que sea semejante en funcionalidad a la librería Pandas de Python para manejar datos, además de utilizar en ella estructuras de datos y métodos de ordenamiento y búsqueda.
 
+* Objetivos especificos: 
+   * Crear una librería en la cual se puedan importar y exportar datos, así como también a través de un dataframe se puedan visualizar, buscar y filtrar dichos datos.
+   * Evaluar los distintos tipos algoritmos de ordenamiento y determinar el más eficiente para los requerimientos del proyecto.
+   * Aplicar los conocimientos aprendidos en clase para poder resolver el problema de la manera más óptima.
 
+## Marco Conceptual
+* Definición de Data Frame:
+DataFrame es una estructura de datos tabular bidimensional, potencialmente heterogénea, con ejes etiquetados (filas y columnas). Un dataframe es una estructura de datos bidimensional, es decir, los datos se alinean de forma tabular en filas y columnas. El dataFrame consta de tres componentes principales: los datos, las filas y las columnas.
 
-_Objetivos especificos: analizar, diseñar, describir y solución_
+![Data Frame](MarcoConceptualDataFrame.PNG)
+* Definición de Arboles Binarios:
+Un árbol binario es una estructura de datos en la cual cada nodo puede tener un hijo izquierdo y un hijo derecho. No pueden tener más de dos hijos (de ahí el nombre "binario"). Si algún hijo tiene como referencia a null, es decir que no almacena ningún dato, entonces este es llamado un nodo externo. En el caso contrario el hijo es llamado un nodo interno.
 
-todos los objetivos deben de tener un solo verbo, y estos deben de tener precedencia (taxonomía de bloom)
+![Arboles Binarios](MarcoConceptualArbolesBinarios.PNG)
 
-## Mapa Conceptual
-
-_Definir: DataFrame, Arboles binarios_
 
 ## Diagrama de clases (alto nivel)
 
-![Diagrama de Clases](DataFrame.png)
-
-data frame, filas, columnas, index
+![Diagrama](Diagrama.PNG)
 
 ## Cronograma de Trabajo
 
@@ -47,7 +52,7 @@ Dichas tareas son las siguientes:
           *  Realizar Mapa Conceptual  
           
         *  Raúl Casanova se encargará de:
-            *  Realizar Objetivos Generales
+            *  Realizar Objetivo Generale
             *  Realizar Diagrama de clases
             *  Realizar Cronograma de Trabajo
             
