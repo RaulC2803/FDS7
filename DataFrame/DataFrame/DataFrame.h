@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <functional>
 
 using namespace std;
 using namespace System;
@@ -84,4 +85,61 @@ public:
 		file.close();
 		return true;
 	}
+};
+
+class Tree
+{
+	struct Node
+	{
+		float elem;
+		Node* left;
+		Node* right;
+
+		Node(float elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
+	};
+
+	Node* root;
+	int length;
+
+	void borrar(Node* node)
+	{
+		if (node != nullptr) {
+			borrar(node->left);
+			borrar(node->right);
+			delete node;
+		}
+	}
+
+	void add(Node*& node, float elem) {
+		if (node == nullptr)
+		{
+			node = new Node(elem);
+		}
+		else if (elem < node->elem) {
+			add(node->left, elem);
+		}
+		else {
+			add(node->right, elem);
+		}
+	}
+
+	void InOrder(Node* node, std::function<void(float)> doSomething) {
+		if (node != nullptr)
+		{
+			InOrder(node->left, doSomething);
+			doSomething(node->elem);
+			InOrder(node->right, doSomething);
+		}
+	}
+
+public:
+
+	Tree() :root(nullptr), length(0) {}
+	~Tree() { borrar(root); }
+	void add(float elem) { add(root, elem); length++; }
+	void InOrder(std::function<void(float)>doSomething)
+	{
+		InOrder(root, doSomething);
+	}
+
 };
