@@ -22,7 +22,7 @@ public:
 
 	void MostrarDatos()
 	{
-		cout << Nombre << " " << Apellido << " " << Año;
+		cout << Nombre << "\t" << Apellido << " \t" << Año;
 	}
 
 	void setNombre(string n) { Nombre = n; }
@@ -31,24 +31,41 @@ public:
 
 };
 
-class Filas
+class Fila
 {
-	vector<CDatos*>*d;
+	vector<CDatos*>*Filas;
 public:
-	Filas() {
-		d = new vector<CDatos*>;
+	Fila() {
+		Filas = new vector<CDatos*>;
 	}
 	void GenerarDatos()
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			d->push_back(new CDatos());
+			Filas->push_back(new CDatos());
 		}
 	}
-	void Mostrar() {
-		for (int i = 0; i < d->size(); i++)
+
+};
+
+class DataFrame
+{
+	vector<CDatos*>*Filas;
+public:
+	DataFrame() {
+		Filas = new vector<CDatos*>;
+	}
+	void GenerarDatos()
+	{
+		for (int i = 0; i < 5; i++)
 		{
-			d->at(i)->MostrarDatos(); cout << endl;
+			Filas->push_back(new CDatos());
+		}
+	}
+	void MostrarFilas() {
+		for (int i = 0; i < Filas->size(); i++)
+		{
+			cout << i << " " ; Filas->at(i)->MostrarDatos(); cout << endl;
 		}
 	}
 	bool LecturaDatos(string Archivo)
@@ -60,7 +77,7 @@ public:
 
 		if (file.fail()) { cout << "ERROR AL ABRIR EL ARCHIVO" << endl; return false; }
 
-		while (file.good() && i < d->size())
+		while (file.good() && i < Filas->size())
 		{
 			string nombre = "";
 			string apellido = "";
@@ -77,9 +94,9 @@ public:
 				getline(file, apellido, '\t');
 				getline(file, año, '\n');
 			}
-			d->at(i)->setNombre(nombre);
-			d->at(i)->setApellido(apellido);
-			d->at(i)->setAño(atoi(año.c_str()));
+			Filas->at(i)->setNombre(nombre);
+			Filas->at(i)->setApellido(apellido);
+			Filas->at(i)->setAño(atoi(año.c_str()));
 			i++;
 		}
 		file.close();
@@ -147,11 +164,14 @@ public:
 
 	Tree() :root(nullptr), length(0) {}
 	~Tree() { borrar(root); }
+
 	void add(float elem) { add(root, elem); length++; }
+
 	void InOrder(std::function<void(float)>doSomething)
 	{
 		InOrder(root, doSomething);
 	}
+
 	float Mayor() {
 		Node* node = Mayor(root);
 		if (node != nullptr) {

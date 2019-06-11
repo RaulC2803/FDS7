@@ -2,7 +2,7 @@
 
 int main()
 {
-	Filas* P = new Filas;
+	DataFrame* P = new DataFrame;
 	P->GenerarDatos();
 
 	string nombreArchivo;
@@ -13,7 +13,7 @@ int main()
 			cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
 		} while (!P->LecturaDatos(nombreArchivo));
 
-		P->Mostrar();
+		P->MostrarFilas();
 
 		system("pause>0");
 		system("cls");
