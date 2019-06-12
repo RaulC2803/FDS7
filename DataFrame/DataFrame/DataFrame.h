@@ -33,27 +33,82 @@ public:
 
 class Fila
 {
-	vector<CDatos*>*Filas;
+	CDatos* Datos;
 public:
 	Fila() {
-		Filas = new vector<CDatos*>;
+		Datos = new CDatos;
 	}
 	void GenerarDatos()
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			Filas->push_back(new CDatos());
-		}
+		Datos->MostrarDatos();
 	}
 
 };
 
+
+class Columna {
+protected:
+	string Etiqueta;
+public:
+	Columna() {
+		
+	}
+};
+
+class ColumnaString : public Columna {
+	vector<string>* Datos;
+public:
+	ColumnaString() {
+		Datos = new vector<string>;
+	}
+	void AgregarDatos(string n) {
+		Datos->push_back(n);
+	}
+};
+
+class ColumnaInt : public Columna {
+	vector<int>* Datos;
+public:
+	ColumnaInt() {
+		Datos = new vector<int>;
+	}
+	void AgregarDatos(int n) {
+		Datos->push_back(n);
+	}
+};
+
+class ColumnaLong : public Columna {
+	vector<long>* Datos;
+public:
+	ColumnaLong() {
+		Datos = new vector<long>;
+	}
+	void AgregarDatos(long n) {
+		Datos->push_back(n);
+	}
+};
+
+class ColumnaDouble : public Columna {
+	vector<double>* Datos;
+public:
+	ColumnaDouble() {
+		Datos = new vector<double>;
+	}
+	void AgregarDatos(double n) {
+		Datos->push_back(n);
+	}
+};
+
+template <typename T, typename R = T>
 class DataFrame
 {
-	vector<CDatos*>*Filas;
+	vector<CDatos*>* Filas;
+	vector<Columna*>* Columnas;
 public:
+
 	DataFrame() {
 		Filas = new vector<CDatos*>;
+		Columnas = new vector<Columna*>;
 	}
 	void GenerarDatos()
 	{
