@@ -1,0 +1,4 @@
+%2F%2F Cool Class Diagram, [CDatos|-Nombre:string;Apellido:string; Año:int|MostarDatos(); setNombre(); setApellido(); setAño(){bg:tomato}]<>-orders*>
+[Fila|id:int|MostrarFila(); setNombre(); setApellido(); setNombre(){bg:steelblue}], 
+[Columna|Etiqueta:string|Columna(){bg:skyblue}],
+[DataFrame||DataFrame(); ~DataFrame(); GenerarDatos(); MostrarFilas(); LecturaDatos(); Ordernar(){bg:plum}]
