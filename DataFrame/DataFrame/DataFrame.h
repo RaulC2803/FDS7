@@ -33,9 +33,11 @@ public:
 
 class Fila
 {
+	int id =0;
 	CDatos* Datos;
 public:
-	Fila() {
+	Fila(int _id) {
+		id = _id;
 		Datos = new CDatos;
 	}
 	void GenerarDatos()
