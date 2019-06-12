@@ -77,6 +77,7 @@ void configurarColorTexto(short color) {
 void Menu(int &Opcion) {
 	Console::SetWindowSize(115, 50);
 	while (!(Opcion == 1)) {
+
 		configurarColorTexto(Cian);
 	     cout << "\t  _______                             __                             ______                      " << endl;
 		 cout << "\t /       \                           /  |                           /      \       __        __    " << endl;
