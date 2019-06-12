@@ -77,7 +77,7 @@ void configurarColorTexto(short color) {
 void Menu(int &Opcion) {
 	
 	while (!(Opcion == 1)) {
-		cout << "PANDA" << endl << endl;
+		cout << "PANDA DATAFRAME" << endl << endl;
 		cout << "     ,,,         ,,,  " << endl;
 		cout << "   ,*   ^;     ;'   *," << endl;
 		cout << "   ;   s$$$$$$$s     ;" << endl;
