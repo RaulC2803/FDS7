@@ -1,4 +1,14 @@
-%2F%2F Cool Class Diagram, [CDatos|-Nombre:string;Apellido:string; Año:int|MostarDatos(); setNombre(); setApellido(); setAño(){bg:tomato}]<>-orders*>
+%2F%2F Cool Class Diagram, 
+[CDatos|-Nombre:string;Apellido:string; Año:int|MostarDatos(); setNombre(); setApellido(); setAño(){bg:tomato}]<>-orders*>
 [Fila|id:int|MostrarFila(); setNombre(); setApellido(); setNombre(){bg:steelblue}], 
 [Columna|Etiqueta:string|Columna(){bg:skyblue}],
-[DataFrame||DataFrame(); ~DataFrame(); GenerarDatos(); MostrarFilas(); LecturaDatos(); Ordernar(){bg:plum}]
+[DataFrame||DataFrame(); ~DataFrame(); GenerarDatos(); MostrarFilas(); LecturaDatos(); Ordernar(){bg:plum}], [DataFrame]++1-1-[Columna],
+[DataFrame]++1-1..*-[Fila], [Columna]<>1-0..*-[CDatos],[Fila]<>1-0..1-[CDatos],
+[ColumnaString||AgregarDatos(); getDatos();{bg:paleturquoise}]
+[ColumnaInt||AgregarDatos(); getDatos();{bg:paleturquoise}]
+[ColumnaLong||AgregarDatos(); getDatos();{bg:paleturquoise}]
+[ColumnaDouble||AgregarDatos(); getDatos();{bg:paleturquoise}]
+[Columna]<--[ColumnaString]
+[Columna]<--[ColumnaInt]
+[Columna]<--[ColumnaLong]
+[Columna]<--[ColumnaDouble]
