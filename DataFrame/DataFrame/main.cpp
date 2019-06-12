@@ -3,26 +3,30 @@
 
 int main()
 {
-	DataFrame* P = new DataFrame;
-	P->GenerarDatos();
+	int Opcion;
+	Menu(Opcion);
+	if (Opcion == 1) {
+		DataFrame* P = new DataFrame;
+		P->GenerarDatos();
 
-	string nombreArchivo;
+		string nombreArchivo;
 
-	while (true) {
+		while (true) {
 
-		do {
-			cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
-		} while (!P->LecturaDatos(nombreArchivo));
+			do {
+				cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
+			} while (!P->LecturaDatos(nombreArchivo));
 
-		P->MostrarFilas();
+			P->MostrarFilas();
 
-		P->Ordenar("nombre");
-		cout << "\n\n\n";
+			P->Ordenar("nombre");
+			cout << "\n\n\n";
 
-		P->MostrarFilas();
+			P->MostrarFilas();
 
-		system("pause>0");
-		system("cls");
+			system("pause>0");
+			system("cls");
+		}
 	}
 	return 0;
 }

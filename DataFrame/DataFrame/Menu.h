@@ -75,33 +75,43 @@ void configurarColorTexto(short color) {
 }
 
 void Menu(int &Opcion) {
-	
+	Console::SetWindowSize(115, 50);
 	while (!(Opcion == 1)) {
-		cout << "PANDA DATAFRAME" << endl << endl;
-		cout << "     ,,,         ,,,  " << endl;
-		cout << "   ,*   ^;     ;'   *," << endl;
-		cout << "   ;   s$$$$$$$s     ;" << endl;
-		cout << "   ',ss$$$$$$$$$$s, ' " << endl;
-		cout << "   ;s$$$$$$$$$$$$$$$  " << endl;
-		cout << "   $$$$$$$$$$$$$$$$$$ " << endl;
-		cout << "  $$$$P**Y$$$Y**W$$$$$" << endl;
-		cout << "  $$$$  p*$$$*q  $$$$$" << endl;
-		cout << "   $$$$$.$$$$$.$$$$$$ " << endl;
-		cout << "     $$$$$$$$$$$$$$   " << endl;
-		cout << "	  *Y$$$***$$$Y*    " << endl;
-		cout << "        *$b.$$*       " << endl;
+		configurarColorTexto(Cian);
+	     cout << "\t  _______                             __                             ______                      " << endl;
+		 cout << "\t /       \                           /  |                           /      \       __        __    " << endl;
+		 cout << "\t $$$$$$$  |  ______   _______    ____$$ |  ______    _______       /$$$$$$  |   /  |      /  |   " << endl;
+		 cout << "\t $$ |__$$ | /      \ /       \  /      $$ | /      \  /       |       $$ |  $$/  __$$ |__  __$$ |__ " << endl;
+		 cout << "\t $$    $$/  $$$$$$  |$$$$$$$  |/$$$$$$$ | $$$$$$  |/$$$$$$$/       $$ |      /  $$    |/  $$    |" << endl;
+		 cout << "\t $$$$$$$/   /    $$ |$$ |  $$ |$$ |  $$ | /    $$ |$$      \        $$ |   __ $$$$$$$$/ $$$$$$$$/ " << endl;
+		 cout << "\t $$ |      /$$$$$$$ |$$ |  $$ |$$ \__ $$ |/$$$$$$$ | $$$$$$  |      $$ \__/  |    $$ |      $$ |   " << endl;
+		 cout << "\t $$ |      $$    $$ |$$ |  $$ |$$    $$ |$$    $$ |/     $$/       $$    $$/    $$/       $$/    " << endl;
+		 cout << "\t $$/        $$$$$$$/ $$/   $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$/                      " << endl;
+		 cout << "\t                                                                                              	" << endl;
+		
+		cout << "\n\n\t\t\t\t\t\t  ,*   ^;     ;'   *," << endl;
+		cout << "\t\t\t\t\t\t  ;   s$$$$$$$s     ;" << endl;
+		cout << "\t\t\t\t\t\t  ',ss$$$$$$$$$$s, ' " << endl;
+		cout << "\t\t\t\t\t\t  ;s$$$$$$$$$$$$$$$  " << endl;
+		cout << "\t\t\t\t\t\t  $$$$$$$$$$$$$$$$$$ " << endl;
+		cout << "\t\t\t\t\t\t $$$$P**Y$$$Y**W$$$$$" << endl;
+		cout << "\t\t\t\t\t\t $$$$  p*$$$*q  $$$$$" << endl;
+		cout << "\t\t\t\t\t\t  $$$$$.$$$$$.$$$$$$ " << endl;
+		cout << "\t\t\t\t\t\t   $$$$$$$$$$$$$$$   " << endl;
+		cout << "\t\t\t\t\t\t    *Y$$$***$$$Y*    " << endl;
+		cout << "\t\t\t\t\t\t       *$b.$$*       " << endl;
 	
 		configurarColorTexto(Rojo);
-		cout << "\n\t\t      " << char(201) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(187) << endl;
-		cout << "\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "\t\t       MENU\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "    1. Mostrar Dataframe\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t      " << char(186) << "\t\t\t\t\t    " << char(186);
-		cout << "\n\t\t      " << char(200) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(188) << endl;
+		cout << "\n\n\t\t\t\t      " << char(201) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(187) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t       MENU\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    1. Mostrar Dataframe\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186);
+		cout << "\n\t\t\t\t      " << char(200) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(188) << endl;
 
 		configurarColorTexto(Verde);
 		do {
