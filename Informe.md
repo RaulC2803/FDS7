@@ -35,7 +35,7 @@ Un árbol binario es una estructura de datos en la cual cada nodo puede tener un
 
 ## Diagrama de clases (alto nivel)
 
-![Diagrama](Diagrama.PNG)
+![Diagrama](DiagramaClases.PNG)
 
 ## Cronograma de Trabajo
 
