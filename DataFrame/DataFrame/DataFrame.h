@@ -1,8 +1,5 @@
-#include <iostream>
-#include <string>
+#include "BusquedayOrdenamiento.hpp"
 #include <fstream>
-#include <vector>
-#include <functional>
 
 using namespace std;
 using namespace System;
@@ -33,56 +30,64 @@ public:
 
 class Fila
 {
-	int id =0;
+	int id = 0;
 	CDatos* Datos;
 public:
-	Fila(int _id) {
+	Fila(int _id, CDatos* data) {
 		id = _id;
-		Datos = new CDatos;
+		Datos = data;
 	}
-	void GenerarDatos()
+	void MostrarFila()
 	{
-		Datos->MostrarDatos();
+		cout << id << " ";  Datos->MostrarDatos();
 	}
-
+	void setNombre(string n) { Datos->setNombre(n); }
+	void setApellido(string a) { Datos->setApellido(a); }
+	void setAño(int año) { Datos->setAño(año); }
 };
-
 
 class Columna {
 protected:
 	string Etiqueta;
 public:
 	Columna() {
-		
 	}
 };
 
 class ColumnaString : public Columna {
 	vector<string>* Datos;
 public:
-	ColumnaString() {
+	ColumnaString(string Etiqueta) : Columna() {
 		Datos = new vector<string>;
+		this->Etiqueta = Etiqueta;
 	}
 	void AgregarDatos(string n) {
 		Datos->push_back(n);
+	}
+	vector<string>* getDato()
+	{
+		return Datos;
 	}
 };
 
 class ColumnaInt : public Columna {
 	vector<int>* Datos;
 public:
-	ColumnaInt() {
+	ColumnaInt(string Etiqueta) : Columna() {
 		Datos = new vector<int>;
+		this->Etiqueta = Etiqueta;
 	}
 	void AgregarDatos(int n) {
 		Datos->push_back(n);
 	}
+	
 };
 
 class ColumnaLong : public Columna {
 	vector<long>* Datos;
 public:
-	ColumnaLong() {
+	ColumnaLong(string Etiqueta) : Columna() {
+		this->Etiqueta = Etiqueta;
 		Datos = new vector<long>;
 	}
 	void AgregarDatos(long n) {
@@ -93,36 +98,53 @@ public:
 class ColumnaDouble : public Columna {
 	vector<double>* Datos;
 public:
-	ColumnaDouble() {
+	ColumnaDouble(string Etiqueta) : Columna() {
 		Datos = new vector<double>;
+		this->Etiqueta = Etiqueta;
 	}
 	void AgregarDatos(double n) {
 		Datos->push_back(n);
 	}
 };
 
-template <typename T, typename R = T>
 class DataFrame
 {
-	vector<CDatos*>* Filas;
+	vector<Fila*>* Filas;
 	vector<Columna*>* Columnas;
+	ColumnaString* Nombres;
+	ColumnaString* Apellidos;
+	ColumnaInt* Año;
 public:
 
 	DataFrame() {
-		Filas = new vector<CDatos*>;
+		Filas = new vector<Fila*>;
 		Columnas = new vector<Columna*>;
+		Columnas->push_back(new ColumnaString("Nombre"));
+		Columnas->push_back(new ColumnaString("Apellido"));
+		Columnas->push_back(new ColumnaInt("Año"));
+		Nombres = (ColumnaString*)Columnas->at(0);			   //Se convierte el Puntero Columnas a puntero ColumnasString
+		Apellidos = (ColumnaString*)Columnas->at(1);		   //Se convierte el Puntero Columnas a puntero ColumnasString
+		Año = (ColumnaInt*)Columnas->at(2);					   //Se convierte el Puntero Columnas a puntero ColumnasInt
 	}
+
+	~DataFrame()
+	{
+		delete Nombres;
+		delete Apellidos;
+		delete Año;
+	}
+
 	void GenerarDatos()
 	{
 		for (int i = 0; i < 5; i++)
 		{
-			Filas->push_back(new CDatos());
+			Filas->push_back(new Fila(i, new CDatos));
 		}
 	}
 	void MostrarFilas() {
 		for (int i = 0; i < Filas->size(); i++)
 		{
-			cout << i << " " ; Filas->at(i)->MostrarDatos(); cout << endl;
+			Filas->at(i)->MostrarFila(); cout << endl;
 		}
 	}
 	bool LecturaDatos(string Archivo)
@@ -151,6 +173,11 @@ public:
 				getline(file, apellido, '\t');
 				getline(file, año, '\n');
 			}
+
+			Nombres->AgregarDatos(nombre);					
+			Apellidos->AgregarDatos(apellido);				
+			Año->AgregarDatos(atoi(año.c_str()));				
+
 			Filas->at(i)->setNombre(nombre);
 			Filas->at(i)->setApellido(apellido);
 			Filas->at(i)->setAño(atoi(año.c_str()));
@@ -158,6 +185,19 @@ public:
 		}
 		file.close();
 		return true;
+	}
+
+	void Ordenar(string busqueda)
+	{
+		if (busqueda == "Nombre" || "nombre")
+		{
+			auto lmb = [](string C) {return C; }; // El lambda obtiene un string
+
+			//Se pasa por parametro, el vector Dato de la Columna Nombres, el vector de Filas, y el lambda
+
+			InsertionSort<string, string, Fila*>(Nombres->getDato(),Filas, lmb); 
+																		
+		}
 	}
 };
 
