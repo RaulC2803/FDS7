@@ -3,11 +3,10 @@
 
 int main()
 {
-	int Opcion;
+	int Opcion = 0;
 	Menu(Opcion);
 	if (Opcion == 1) {
 		DataFrame* P = new DataFrame;
-		P->GenerarDatos();
 
 		string nombreArchivo;
 

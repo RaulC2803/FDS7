@@ -133,14 +133,6 @@ public:
 		delete Apellidos;
 		delete Año;
 	}
-
-	void GenerarDatos()
-	{
-		for (int i = 0; i < 5; i++)
-		{
-			Filas->push_back(new Fila(i, new CDatos));
-		}
-	}
 	void MostrarFilas() {
 		for (int i = 0; i < Filas->size(); i++)
 		{
@@ -156,8 +148,9 @@ public:
 
 		if (file.fail()) { cout << "ERROR AL ABRIR EL ARCHIVO" << endl; return false; }
 
-		while (file.good() && i < Filas->size())
+		while (file.good())
 		{
+			Filas->push_back(new Fila(i, new CDatos));
 			string nombre = "";
 			string apellido = "";
 			string año = "";
@@ -183,6 +176,7 @@ public:
 			Filas->at(i)->setAño(atoi(año.c_str()));
 			i++;
 		}
+		Filas->pop_back();
 		file.close();
 		return true;
 	}

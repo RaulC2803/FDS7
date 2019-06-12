@@ -75,8 +75,8 @@ void configurarColorTexto(short color) {
 }
 
 void Menu(int &Opcion) {
-	Console::SetWindowSize(115, 50);
-	while (!(Opcion == 1)) {
+	Console::SetWindowSize(115, 40);
+	while (!Opcion == 1) {
 
 		configurarColorTexto(Cian);
 	     cout << "\t  _______                             __                             ______                      " << endl;
@@ -116,7 +116,7 @@ void Menu(int &Opcion) {
 
 		configurarColorTexto(Verde);
 		do {
-			Console::SetCursorPosition(18, 40);
+			Console::SetCursorPosition(48, 36);
 			cout << "ELIJA UNA OPCION: ";
 			cin >> Opcion;
 		} while (!(Opcion >= 1 && Opcion <= 9));
