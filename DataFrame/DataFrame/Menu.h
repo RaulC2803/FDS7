@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 #include <conio.h>
 #include <functional>
@@ -23,12 +22,6 @@ using namespace std;
 #define CianOS    13
 #define Violeta   14
 #define VioletaOS 15
-
-#define ARRIBA 72
-#define ABAJO 80
-#define DERECHA 77
-#define IZQUIERDA 75
-#define SALIR      27
 
 void configurarColorFondo(short color) {
 	switch (color)
@@ -76,7 +69,7 @@ void configurarColorTexto(short color) {
 
 void Menu(int &Opcion) {
 	Console::SetWindowSize(115, 40);
-	while (!Opcion == 1) {
+	while (Opcion == 0) {
 
 		configurarColorTexto(Cian);
 	     cout << "\t  _______                             __                             ______                      " << endl;
@@ -108,7 +101,9 @@ void Menu(int &Opcion) {
 		cout << "\t\t\t\t      " << char(186) << "\t\t       MENU\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t\t\t      " << char(186) << "    1. Mostrar Dataframe\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    1. Crear Dataframe\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    2. Mostrar Dataframe\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    3. Guardar DataFrame\t\t    " << char(186) << endl;
 		//Guardar DF
 		//Mostrar DF (Seleccion)
 		//Listar DFs
@@ -119,7 +114,7 @@ void Menu(int &Opcion) {
 		//  *Menor, Mayor, etc
 		//Indexar DF
 		//Borrar DF (Seleccion)
-		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		//cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186);
 		cout << "\n\t\t\t\t      " << char(200) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(188) << endl;

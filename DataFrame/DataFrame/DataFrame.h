@@ -17,15 +17,13 @@ public:
 		Año = 0;
 	}
 
-	void MostrarDatos()
-	{
-		cout << Nombre << "\t" << Apellido << " \t" << Año;
-	}
-
 	void setNombre(string n) { Nombre = n; }
 	void setApellido(string a) { Apellido = a; }
 	void setAño(int año) { Año = año; }
 	
+	string getNombre() { return Nombre; }
+	string getApellido() { return Apellido; }
+	int getAño() { return Año; }
 
 };
 
@@ -40,13 +38,15 @@ public:
 	}
 	void MostrarFila()
 	{
-		cout << id << " ";  Datos->MostrarDatos();
+		cout << id << "\t\t" << Datos->getNombre() << "\t\t" << Datos->getApellido() << "\t\t" << Datos->getAño();
 	}
 	void setNombre(string n) { Datos->setNombre(n); }
 	void setApellido(string a) { Datos->setApellido(a); }
 	void setAño(int año) { Datos->setAño(año); }
+	string getNombre() { return Datos->getNombre(); }
+	string getApellido() { return Datos->getApellido(); }
+	int getAño() { return Datos->getAño(); }
 };
-
 
 class Columna {
 protected:
@@ -54,6 +54,7 @@ protected:
 public:
 	Columna() {
 	}
+	string getEtiqueta() { return Etiqueta; }
 };
 
 class ColumnaString : public Columna {
@@ -116,9 +117,11 @@ class DataFrame
 	ColumnaString* Nombres;
 	ColumnaString* Apellidos;
 	ColumnaInt* Año;
+	bool isEmpty;
 public:
 
 	DataFrame() {
+		isEmpty = true;
 		Filas = new vector<Fila*>;
 		Columnas = new vector<Columna*>;
 		Columnas->push_back(new ColumnaString("Nombre"));
@@ -135,7 +138,9 @@ public:
 		delete Apellidos;
 		delete Año;
 	}
-	void MostrarFilas() {
+	void MostrarData() {
+		cout << "ID\t\t" <<Nombres->getEtiqueta() << "\t\t" << Apellidos->getEtiqueta() << "\t\t" << Año->getEtiqueta();
+		cout << endl << endl;
 		for (int i = 0; i < Filas->size(); i++)
 		{
 			Filas->at(i)->MostrarFila(); cout << endl;
@@ -143,6 +148,7 @@ public:
 	}
 	bool LecturaDatos(string Archivo)
 	{
+		isEmpty = false;
 		int i = 0;
 		ifstream file;
 
@@ -182,7 +188,22 @@ public:
 		file.close();
 		return true;
 	}
+	void GuardarDatos()
+	{
+		string nombreArchivo;
+		ofstream file;
 
+		cout << "Nombre para Guardar: "; cin >> nombreArchivo;
+		nombreArchivo += ".cvs";
+		file.open(nombreArchivo);
+
+		for (int i = 0; i < Filas->size(); i++)
+		{
+			file << Filas->at(i)->getNombre(); file << ","; file << Filas->at(i)->getApellido(); 
+			file << ","; file << Filas->at(i)->getAño(); file << "\n";
+		}
+		file.close();
+	}
 	void Ordenar(string busqueda)
 	{
 		if (busqueda == "Nombre" || "nombre")
@@ -195,6 +216,7 @@ public:
 																		
 		}
 	}
+	bool getIsEmpty() { return isEmpty; }
 };
 
 class Tree
