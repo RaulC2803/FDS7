@@ -25,6 +25,7 @@ public:
 	void setNombre(string n) { Nombre = n; }
 	void setApellido(string a) { Apellido = a; }
 	void setAño(int año) { Año = año; }
+	
 
 };
 
@@ -45,6 +46,7 @@ public:
 	void setApellido(string a) { Datos->setApellido(a); }
 	void setAño(int año) { Datos->setAño(año); }
 };
+
 
 class Columna {
 protected:

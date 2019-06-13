@@ -1,8 +1,10 @@
 #include "DataFrame.h"
 #include "Menu.h"
-
+#include <map>
 int main()
-{
+{  
+	map<string, float> m;
+	m["hola"] = 10.5;
 	int Opcion = 0;
 	Menu(Opcion);
 	if (Opcion == 1) {

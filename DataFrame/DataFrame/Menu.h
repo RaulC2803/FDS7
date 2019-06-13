@@ -109,6 +109,16 @@ void Menu(int &Opcion) {
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    1. Mostrar Dataframe\t\t    " << char(186) << endl;
+		//Guardar DF
+		//Mostrar DF (Seleccion)
+		//Listar DFs
+		//(OPCIONAL)Crear DF(Crear un nuevo data frame con lo indicado, desde otro data frame 
+		//-Seleccionar
+		//-Operación
+		//-Filtrado
+		//  *Menor, Mayor, etc
+		//Indexar DF
+		//Borrar DF (Seleccion)
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186);
