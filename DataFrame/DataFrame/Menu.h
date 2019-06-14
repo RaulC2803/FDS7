@@ -83,9 +83,9 @@ void Menu(int &Opcion) {
 		 cout << "\t $$/        $$$$$$$/ $$/   $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$/                      " << endl;
 		 cout << "\t                                                                                              	" << endl;
 		
-		cout << "\n\n\t\t\t\t\t\t  ,*   ^;     ;'   *," << endl;
-		cout << "\t\t\t\t\t\t  ;   s$$$$$$$s     ;" << endl;
-		cout << "\t\t\t\t\t\t  ',ss$$$$$$$$$$s, ' " << endl;
+		cout << "\n\n\t\t\t\t\t\t  ,*   ^;     ;'  *," << endl;
+		cout << "\t\t\t\t\t\t  ;   s$$$$$$$s    ;" << endl;
+		cout << "\t\t\t\t\t\t  ',ss$$$$$$$$$$s,' " << endl;
 		cout << "\t\t\t\t\t\t  ;s$$$$$$$$$$$$$$$  " << endl;
 		cout << "\t\t\t\t\t\t  $$$$$$$$$$$$$$$$$$ " << endl;
 		cout << "\t\t\t\t\t\t $$$$P**Y$$$Y**W$$$$$" << endl;
@@ -104,6 +104,7 @@ void Menu(int &Opcion) {
 		cout << "\t\t\t\t      " << char(186) << "    1. Crear Dataframe\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    2. Mostrar Dataframe\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    3. Guardar DataFrame\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    27. Salir           \t\t    " << char(186) << endl;
 		//Guardar DF
 		//Mostrar DF (Seleccion)
 		//Listar DFs
@@ -115,7 +116,7 @@ void Menu(int &Opcion) {
 		//Indexar DF
 		//Borrar DF (Seleccion)
 		//cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
+		/*cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;*/
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186);
 		cout << "\n\t\t\t\t      " << char(200) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(205) << char(188) << endl;
 
@@ -124,7 +125,7 @@ void Menu(int &Opcion) {
 			Console::SetCursorPosition(48, 36);
 			cout << "ELIJA UNA OPCION: ";
 			cin >> Opcion;
-		} while (!(Opcion >= 1 && Opcion <= 9));
+		} while (!(Opcion >= 1 && Opcion <= 9 || Opcion == 27));
 		configurarColorTexto(Verde);
 		configurarColorFondo(Negro);
 		system("cls");

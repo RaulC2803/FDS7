@@ -4,8 +4,6 @@
 using namespace std;
 using namespace System;
 
-
-
 class CDatos
 {
 	string Nombre;
@@ -26,7 +24,6 @@ public:
 	string getNombre() { return Nombre; }
 	string getApellido() { return Apellido; }
 	int getAño() { return Año; }
-
 };
 
 class Fila
@@ -157,7 +154,7 @@ public:
 
 		file.open(Archivo, ios::in);
 
-		if (file.fail()) { cout << "ERROR AL ABRIR EL ARCHIVO" << endl; return false; }
+		if (file.fail()) { configurarColorTexto(10); cout << "ERROR AL ABRIR EL ARCHIVO" << endl; configurarColorTexto(5); return false;  }
 
 		while (file.good())
 		{
@@ -248,8 +245,6 @@ public:
 			return false;
 		}
 		else return true;
-		
-		
 	}
 
 	void MostrarDFpos(int i) {
@@ -257,6 +252,13 @@ public:
 		Listado->at(i)->MostrarData();
 		cout << endl;
 	}
+
+	void Guardar(int i)
+	{
+		Listado->at(i)->GuardarDatos();
+	}
+
+	bool getIsEmpty(int i) { return Listado->at(i)->getIsEmpty(); }
 
 	int getsize() {
 		return Listado->size();

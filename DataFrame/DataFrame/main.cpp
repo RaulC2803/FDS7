@@ -20,43 +20,54 @@ void Interacción()
 				do {
 					cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
 				} while (!Listado->GenerarDF(nombreArchivo));
-				
+
 				cout << "DATAFRAME CREADO EXITOSAMENTE" << endl;
 				cout << "Desea crear un nuevo DataFrame?(Si:1/No:0) ";
 				cin >> Opcion2;
 				if (Opcion2 == 0)
-				break;
+					break;
 			}
 			break;
 
 		case 2:
 			Listado->MostrarDF(); break;
 
-		/*case 3:
-			if (!P->getIsEmpty()) {
-				P->GuardarDatos();
+		case 3: int i;
+			do
+			{
+				cout << "¿Cual DataFrame quiere guardar?: "; cin >> i;
+				cout << endl;
+
+			} while (i >= Listado->getsize());
+
+			if (!Listado->getIsEmpty(i)) {
+
+				Listado->Guardar(i);
 				cout << "DATAFRAME GUARDADO EXITOSAMENTE";
 			}
-			else { cout << "No ha igresado datos al DataFrame"; }
-			break;
-			*/
-		case 4: 
-			
-				do {
-					cout << "Ingresa el Data Frame que quiere mostrar: "; cin >> Indice;
-				} while (!(Indice >= 0 && Indice < Listado->getsize()));
+				else { cout << "No ha igresado datos al DataFrame"; }
+				break;
 				
-				Listado->MostrarDFpos(Indice);
+		case 4:
+
+			do {
+				cout << "Ingresa el Data Frame que quiere mostrar: "; cin >> Indice;
+			} while (!(Indice >= 0 && Indice < Listado->getsize()));
+
+			Listado->MostrarDFpos(Indice);
 			break;
-		
+
 		default:
 			break;
 		}
+		if (Opcion == 27) break;
 		system("pause>0");
 		system("cls");
+		
 		Opcion = 0;
 		Menu(Opcion);
 	}
+	
 }
 
 int main()
