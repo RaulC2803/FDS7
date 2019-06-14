@@ -4,10 +4,11 @@
 
 void Interacción()
 {
+	ListadoDF* Listado = new ListadoDF;
 	int Opcion = 0;
+	int Opcion2, Indice;
 	Menu(Opcion);
 
-	DataFrame* P = new DataFrame;
 	string nombreArchivo;
 
 	while (true)
@@ -16,27 +17,38 @@ void Interacción()
 		{
 		case 1:
 			while (true) {
-
 				do {
 					cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
-				} while (!P->LecturaDatos(nombreArchivo));
-
-				cout << "DATAFRAME CREADO EXITOSAMENTE";
+				} while (!Listado->GenerarDF(nombreArchivo));
+				
+				cout << "DATAFRAME CREADO EXITOSAMENTE" << endl;
+				cout << "Desea crear un nuevo DataFrame?(Si:1/No:0) ";
+				cin >> Opcion2;
+				if (Opcion2 == 0)
 				break;
 			}
 			break;
 
 		case 2:
-			P->MostrarData(); break;
+			Listado->MostrarDF(); break;
 
-		case 3:
+		/*case 3:
 			if (!P->getIsEmpty()) {
 				P->GuardarDatos();
 				cout << "DATAFRAME GUARDADO EXITOSAMENTE";
 			}
 			else { cout << "No ha igresado datos al DataFrame"; }
 			break;
-
+			*/
+		case 4: 
+			
+				do {
+					cout << "Ingresa el Data Frame que quiere mostrar: "; cin >> Indice;
+				} while (!(Indice >= 0 && Indice < Listado->getsize()));
+				
+				Listado->MostrarDFpos(Indice);
+			break;
+		
 		default:
 			break;
 		}

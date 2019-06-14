@@ -1,8 +1,10 @@
 #include "BusquedayOrdenamiento.hpp"
 #include <fstream>
-
+#include "Menu.h"
 using namespace std;
 using namespace System;
+
+
 
 class CDatos
 {
@@ -139,7 +141,8 @@ public:
 		delete Año;
 	}
 	void MostrarData() {
-		cout << "ID\t\t" <<Nombres->getEtiqueta() << "\t\t" << Apellidos->getEtiqueta() << "\t\t" << Año->getEtiqueta();
+		cout << "ID\t\t" <<Nombres->getEtiqueta() << "\t\t  " << Apellidos->getEtiqueta() << "\t\t" << Año->getEtiqueta();
+
 		cout << endl << endl;
 		for (int i = 0; i < Filas->size(); i++)
 		{
@@ -217,6 +220,47 @@ public:
 		}
 	}
 	bool getIsEmpty() { return isEmpty; }
+};
+
+class ListadoDF {
+	vector<DataFrame*>* Listado;
+public:
+	ListadoDF() {
+		Listado = new vector<DataFrame*>;
+	}
+	~ListadoDF() {
+		Listado->clear();
+	}
+
+	void MostrarDF() {
+		for (int i = 0; i < Listado->size(); i++) {
+			cout << "DATA FRAME #" << i << endl << endl;
+			Listado->at(i)->MostrarData();
+				cout << endl;
+		}
+	}
+
+	bool GenerarDF(string Archivo) {
+		
+		Listado->push_back(new DataFrame());
+		if (!Listado->at(Listado->size() - 1)->LecturaDatos(Archivo)) {
+			Listado->pop_back();
+			return false;
+		}
+		else return true;
+		
+		
+	}
+
+	void MostrarDFpos(int i) {
+		cout << "DATA FRAME #" << i << endl << endl;
+		Listado->at(i)->MostrarData();
+		cout << endl;
+	}
+
+	int getsize() {
+		return Listado->size();
+	}
 };
 
 class Tree
