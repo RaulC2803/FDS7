@@ -83,7 +83,7 @@ void Menu(int &Opcion) {
 		 cout << "\t $$/        $$$$$$$/ $$/   $$/  $$$$$$$/  $$$$$$$/ $$$$$$$/         $$$$$$/                      " << endl;
 		 cout << "\t                                                                                              	" << endl;
 		
-		cout << "\n\n\t\t\t\t\t\t  ,*   ^;     ;'  *," << endl;
+		cout << "\n\n\t\t\t\t\t\t  ,* ^;       ;'  *," << endl;
 		cout << "\t\t\t\t\t\t  ;   s$$$$$$$s    ;" << endl;
 		cout << "\t\t\t\t\t\t  ',ss$$$$$$$$$$s,' " << endl;
 		cout << "\t\t\t\t\t\t  ;s$$$$$$$$$$$$$$$  " << endl;
