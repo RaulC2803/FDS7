@@ -1,6 +1,9 @@
 #include "BusquedayOrdenamiento.hpp"
 #include <fstream>
 #include "Menu.h"
+#include <algorithm>
+#include <functional>
+
 using namespace std;
 using namespace System;
 
@@ -316,6 +319,7 @@ public:
 	}
 };
 
+template <typename T, typename R=T>
 class Tree
 {
 	struct Node
@@ -323,12 +327,22 @@ class Tree
 		float elem;
 		Node* left;
 		Node* right;
+		int h;
 
 		Node(float elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
+
+		static int height(Node* n)
+		{
+			return n == nullptr ? -1 : n->h;
+		}
+		void updateH() {
+			h = std::max(Node::height(left), Node::height(right)) + 1;
+		}
 	};
 
 	Node* root;
 	int length;
+	std::function<R(T)> key;
 
 	void borrar(Node* node)
 	{
@@ -339,17 +353,56 @@ class Tree
 		}
 	}
 
-	void add(Node*& node, float elem) {
+	void rotAB(Node*& node)
+	{
+		Node* aux = node->left;
+		node->left = aux->right;
+		node->updateH();
+		aux->right = node;
+		node = aux;
+		node->updateH();
+	}
+
+	void rotBA(Node*& node)
+	{
+		Node* aux = node->right;
+		n->right = aux->left;
+		node->updateH();
+		aux->left = node;
+		node = aux;
+		node->updateH;
+	}
+
+	void balance(Node*& n)
+	{
+		int delta = Node::height(n->left) - Node::height(n->right);
+		if (delta < -1) {
+			if (Node::height(n->right->left) > Node::height(n->right->right)) {
+				rotAB(n->right);
+			}
+			rotBA(n);
+		}
+		else if (delta > 1) {
+			if (Node::height(n->left->right) > Node::height(n->left->left))
+			{
+				rotBA(n->left);
+			}
+			rotAB(n);
+		}
+	}
+
+	void add(Node*& node, T elem) {
 		if (node == nullptr)
 		{
 			node = new Node(elem);
 		}
-		else if (elem < node->elem) {
+		else if (key(elem) < key(node->elem)) {
 			add(node->left, elem);
 		}
 		else {
 			add(node->right, elem);
 		}
+		node->updateH();
 	}
 
 	void InOrder(Node* node, std::function<void(float)> doSomething) {
@@ -374,10 +427,17 @@ class Tree
 	}
 public:
 
-	Tree() :root(nullptr), length(0) {}
+	Tree(std::function<R(T)>key = [](T a) {return a;}) :root(nullptr), length(0), key(key) {}
 	~Tree() { borrar(root); }
 
-	void add(float elem) { add(root, elem); length++; }
+	int Height() {
+		return Node::height(root);
+	}
+	int size() {
+		return length;
+	}
+
+	void add(T elem) { add(root, elem); length++; }
 
 	void InOrder(std::function<void(float)>doSomething)
 	{
@@ -390,6 +450,4 @@ public:
 			return node->elem;
 		}
 	}
-
-
 };
