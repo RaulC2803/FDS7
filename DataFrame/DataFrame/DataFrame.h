@@ -6,24 +6,22 @@ using namespace System;
 
 class CDatos
 {
-	string Nombre;
-	string Apellido;
-	int Año;
+	vector<string>*Dato;
 
 public:
 	CDatos() {
-		Nombre = "";
-		Apellido = "";
-		Año = 0;
+		Dato = new vector<string>;
 	}
 
-	void setNombre(string n) { Nombre = n; }
-	void setApellido(string a) { Apellido = a; }
-	void setAño(int año) { Año = año; }
+	void agregarDato(string dato) {
+		Dato->push_back(dato);
+	}
+
+	void setDato(string t, int i) { Dato->at(i) = t; }
 	
-	string getNombre() { return Nombre; }
-	string getApellido() { return Apellido; }
-	int getAño() { return Año; }
+	string getDato(int i) { return Dato->at(i); }
+
+	int getContador() { return Dato->size(); }
 };
 
 class Fila
@@ -35,16 +33,19 @@ public:
 		id = _id;
 		Datos = data;
 	}
+	void AgregarDato(string dato) {
+		Datos->agregarDato(dato);
+	}
 	void MostrarFila()
 	{
-		cout << id << "\t\t" << Datos->getNombre() << "\t\t" << Datos->getApellido() << "\t\t" << Datos->getAño();
+		cout << id;
+		for (int i = 0; i < Datos->getContador(); i++)
+		{
+			cout << "\t\t" << Datos->getDato(i);
+		}
 	}
-	void setNombre(string n) { Datos->setNombre(n); }
-	void setApellido(string a) { Datos->setApellido(a); }
-	void setAño(int año) { Datos->setAño(año); }
-	string getNombre() { return Datos->getNombre(); }
-	string getApellido() { return Datos->getApellido(); }
-	int getAño() { return Datos->getAño(); }
+	void setDato(string n, int i) { Datos->setDato(n,i); }
+	string getDato(int i) { return Datos->getDato(i); }
 };
 
 class Columna {
@@ -112,35 +113,71 @@ public:
 class DataFrame
 {
 	vector<Fila*>* Filas;
-	vector<Columna*>* Columnas;
-	ColumnaString* Nombres;
-	ColumnaString* Apellidos;
-	ColumnaInt* Año;
+	vector<ColumnaString*>* Columnas;
+	ifstream file;
+	int contColumnas;
 	bool isEmpty;
 public:
 
 	DataFrame() {
 		isEmpty = true;
 		Filas = new vector<Fila*>;
-		Columnas = new vector<Columna*>;
-		Columnas->push_back(new ColumnaString("Nombre"));
-		Columnas->push_back(new ColumnaString("Apellido"));
-		Columnas->push_back(new ColumnaInt("Año"));
-		Nombres = (ColumnaString*)Columnas->at(0);			   //Se convierte el Puntero Columnas a puntero ColumnasString
-		Apellidos = (ColumnaString*)Columnas->at(1);		   //Se convierte el Puntero Columnas a puntero ColumnasString
-		Año = (ColumnaInt*)Columnas->at(2);					   //Se convierte el Puntero Columnas a puntero ColumnasInt
+		contColumnas = 0;
+		Columnas = new vector<ColumnaString*>;
 	}
 
 	~DataFrame()
 	{
-		delete Nombres;
-		delete Apellidos;
-		delete Año;
+		Filas->clear();
+		Columnas->clear();
 	}
-	void MostrarData() {
-		cout << "ID\t\t" <<Nombres->getEtiqueta() << "\t\t  " << Apellidos->getEtiqueta() << "\t\t" << Año->getEtiqueta();
 
+	void ContarColumnas(string n_file)
+	{
+		int i = 0;
+		bool finish = false;
+
+		string n_columna;
+		string f;
+
+		file.open(n_file, ios::in);
+
+		if (!file.fail()) {
+
+			while (finish != true)
+			{
+				getline(file, f, '\n');
+
+				for (int i = 0; i < f.size(); i++)
+				{
+					if (f.at(i) == ',')
+					{
+						contColumnas++;
+					}
+
+				}
+				contColumnas++;
+				finish = true;
+			}
+		}
+		file.close();
+
+		for (int i = 0; i < contColumnas; i++)
+		{
+			cout << "Ingrese el nombre de la columna " << i << ": "; cin >> n_columna;
+			Columnas->push_back(new ColumnaString(n_columna));
+		}
+	}
+
+	void MostrarData() {
+		cout << "ID\t\t";
+		for (int i = 0; i < contColumnas; i++)
+		{
+			cout << Columnas->at(i)->getEtiqueta() << "\t\t  ";
+		}
+		 
 		cout << endl << endl;
+
 		for (int i = 0; i < Filas->size(); i++)
 		{
 			Filas->at(i)->MostrarFila(); cout << endl;
@@ -148,41 +185,45 @@ public:
 	}
 	bool LecturaDatos(string Archivo)
 	{
-		isEmpty = false;
-		int i = 0;
-		ifstream file;
+		ContarColumnas(Archivo);
 
+		isEmpty = false;
+		int j = 0;
+	
 		file.open(Archivo, ios::in);
 
 		if (file.fail()) { configurarColorTexto(10); cout << "ERROR AL ABRIR EL ARCHIVO" << endl; configurarColorTexto(5); return false;  }
 
 		while (file.good())
 		{
-			Filas->push_back(new Fila(i, new CDatos));
-			string nombre = "";
-			string apellido = "";
-			string año = "";
+			Filas->push_back(new Fila(j, new CDatos));
+		
+			string dato = "";
 			if (Archivo.at(Archivo.size() - 3) == 'c')
 			{
-				getline(file, nombre, ',');
-				getline(file, apellido, ',');
-				getline(file, año, '\n');
+				for (int i = 0; i < contColumnas-1; i++)
+				{
+					getline(file, dato, ',');
+					Columnas->at(i)->AgregarDatos(dato);
+					Filas->at(j)->AgregarDato(dato);
+				}
+				getline(file, dato, '\n');
+				Columnas->at(contColumnas-1)->AgregarDatos(dato);
+				Filas->at(j)->AgregarDato(dato);
 			}
 			else
 			{
-				getline(file, nombre, '\t');
-				getline(file, apellido, '\t');
-				getline(file, año, '\n');
+				for (int i = 0; i < contColumnas-1; i++)
+				{
+					getline(file, dato, '\t');
+					Columnas->at(i)->AgregarDatos(dato);
+					Filas->at(j)->AgregarDato(dato);
+				}
+				getline(file, dato, '\n');
+				Columnas->at(contColumnas - 1)->AgregarDatos(dato);
+				Filas->at(j)->AgregarDato(dato);
 			}
-
-			Nombres->AgregarDatos(nombre);					
-			Apellidos->AgregarDatos(apellido);				
-			Año->AgregarDatos(atoi(año.c_str()));				
-
-			Filas->at(i)->setNombre(nombre);
-			Filas->at(i)->setApellido(apellido);
-			Filas->at(i)->setAño(atoi(año.c_str()));
-			i++;
+			j++;
 		}
 		Filas->pop_back();
 		file.close();
@@ -199,8 +240,18 @@ public:
 
 		for (int i = 0; i < Filas->size(); i++)
 		{
-			file << Filas->at(i)->getNombre(); file << ","; file << Filas->at(i)->getApellido(); 
-			file << ","; file << Filas->at(i)->getAño(); file << "\n";
+			for (int j = 0; j < contColumnas; j++)
+			{
+				if (j != contColumnas - 1)
+				{
+					file << Filas->at(i)->getDato(j); file << ",";
+				}
+				else
+				{
+					file << Filas->at(i)->getDato(j); file;
+				}
+			}
+			file << "\n";
 		}
 		file.close();
 	}
@@ -212,7 +263,7 @@ public:
 
 			//Se pasa por parametro, el vector Dato de la Columna Nombres, el vector de Filas, y el lambda
 
-			InsertionSort<string, string, Fila*>(Nombres->getDato(),Filas, lmb); 
+			/*InsertionSort<string, string, Fila*>(Nombres->getDato(),Filas, lmb); */
 																		
 		}
 	}
