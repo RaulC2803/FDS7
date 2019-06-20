@@ -42,7 +42,7 @@ public:
 	void MostrarFila()
 	{
 		cout << id;
-		for (int i = 0; i < Datos->getContador(); i++)
+		for (int i = 0; i < 3; i++)
 		{
 			cout << "\t\t" << Datos->getDato(i);
 		}
@@ -174,7 +174,7 @@ public:
 
 	void MostrarData() {
 		cout << "ID\t\t";
-		for (int i = 0; i < contColumnas; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			cout << Columnas->at(i)->getEtiqueta() << "\t\t  ";
 		}
@@ -183,7 +183,10 @@ public:
 
 		for (int i = 0; i < Filas->size(); i++)
 		{
-			Filas->at(i)->MostrarFila(); cout << endl;
+			if ((i < 9 || i >= Filas->size() - 9) && i < Filas->size())
+			{
+				Filas->at(i)->MostrarFila(); cout << endl;
+			}
 		}
 	}
 	bool LecturaDatos(string Archivo)
@@ -234,11 +237,18 @@ public:
 	}
 	void GuardarDatos()
 	{
-		string nombreArchivo;
+		string nombreArchivo = "";
+		string extension = "";
 		ofstream file;
 
 		cout << "Nombre para Guardar: "; cin >> nombreArchivo;
-		nombreArchivo += ".cvs";
+		do
+		{
+			cout << "Cual extension usara? csv o tsv: "; cin >> extension;
+
+		} while (extension != "csv" && extension != "tsv");
+		
+		nombreArchivo += "." + extension;
 		file.open(nombreArchivo);
 
 		for (int i = 0; i < Filas->size(); i++)
@@ -247,7 +257,13 @@ public:
 			{
 				if (j != contColumnas - 1)
 				{
-					file << Filas->at(i)->getDato(j); file << ",";
+					if (extension == "csv") {
+						file << Filas->at(i)->getDato(j); file << ",";
+					}
+					else
+					{
+						file << Filas->at(i)->getDato(j); file << "\t";
+					}
 				}
 				else
 				{
