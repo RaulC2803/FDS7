@@ -58,6 +58,8 @@ public:
 	Columna() {
 	}
 	string getEtiqueta() { return Etiqueta; }
+
+	virtual void AgregarDatos(string n) = 0;
 };
 
 class ColumnaString : public Columna {
@@ -67,26 +69,14 @@ public:
 		Datos = new vector<string>;
 		this->Etiqueta = Etiqueta;
 	}
-	void AgregarDatos(string n) {
+	void AgregarDatos(string n) override {
+
 		Datos->push_back(n);
 	}
 	vector<string>* getDato()
 	{
 		return Datos;
 	}
-};
-
-class ColumnaInt : public Columna {
-	vector<int>* Datos;
-public:
-	ColumnaInt(string Etiqueta) : Columna() {
-		Datos = new vector<int>;
-		this->Etiqueta = Etiqueta;
-	}
-	void AgregarDatos(int n) {
-		Datos->push_back(n);
-	}
-	
 };
 
 class ColumnaLong : public Columna {
@@ -121,6 +111,8 @@ class DataFrame
 	int contColumnas;
 	bool isEmpty;
 public:
+	
+
 
 	DataFrame() {
 		isEmpty = true;
@@ -274,19 +266,35 @@ public:
 		}
 		file.close();
 	}
-	void Ordenar(string busqueda)
+	bool Ordenar(string busqueda)
 	{
-		if (busqueda == "Nombre" || "nombre")
-		{
-			auto lmb = [](string C) {return C; }; // El lambda obtiene un string
-
-			//Se pasa por parametro, el vector Dato de la Columna Nombres, el vector de Filas, y el lambda
-
-			/*InsertionSort<string, string, Fila*>(Nombres->getDato(),Filas, lmb); */
-																		
+		
+		int i;
+		for (i = 0; i < contColumnas; i++) {
+			if (Columnas->at(i)->getEtiqueta() == busqueda) {
+				
+				break;
+			}
 		}
+		if (i == contColumnas) {
+			return false;
+		}
+		auto lmb = [](string c) {return c; };
+		InsertionSort<string, string, Fila*>(Columnas->at(i)->getDato(),Filas, lmb); 	
+		return true;
 	}
+
+	
+
 	bool getIsEmpty() { return isEmpty; }
+
+	vector<Fila*>* getFila() {
+		return this->Filas;
+	}
+
+	vector<ColumnaString*>* getColumna() {
+		return this->Columnas;
+	}
 };
 
 class ListadoDF {
@@ -332,6 +340,10 @@ public:
 
 	int getsize() {
 		return Listado->size();
+	}
+
+	bool OrdenarXAtributo(string B, int n) {
+		return Listado->at(n)->Ordenar(B);
 	}
 };
 

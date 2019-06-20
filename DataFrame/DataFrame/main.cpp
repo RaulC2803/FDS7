@@ -7,6 +7,7 @@ void Interacción()
 	ListadoDF* Listado = new ListadoDF;
 	int Opcion = 0;
 	int Opcion2, Indice;
+	string Busqueda;
 	Menu(Opcion);
 
 	string nombreArchivo;
@@ -57,6 +58,17 @@ void Interacción()
 			Listado->MostrarDFpos(Indice);
 			break;
 
+		case 5:
+			do{
+			cout << "Elige el Data Frame que quieres ordenar: ";
+			cin >> Indice;
+		   
+			cout << "Elige la etiqueta por la que quieres ordenar: ";
+
+			cin >> Busqueda;
+			} while (!(Indice >= 0 && Indice < Listado->getsize()) || !Listado->OrdenarXAtributo(Busqueda, Indice));
+		
+			break;
 		default:
 			break;
 		}
