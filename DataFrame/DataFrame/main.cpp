@@ -32,7 +32,7 @@ void Interacción()
 
 		case 2:
 			Listado->MostrarDF(); break;
-
+/*
 		case 3: int i;
 			do
 			{
@@ -68,9 +68,12 @@ void Interacción()
 			cin >> Busqueda;
 			} while (!(Indice >= 0 && Indice < Listado->getsize()) || !Listado->OrdenarXAtributo(Busqueda, Indice));
 		
+			break;*/
+		/*case 1: cin >> Busqueda;
+			Listado->GenerarColumnas(Busqueda);
 			break;
 		default:
-			break;
+			break;*/
 		}
 		if (Opcion == 27) break;
 		system("pause>0");
@@ -82,11 +85,19 @@ void Interacción()
 	
 }
 
+
+
+class x {
+public:
+	int i = 0;
+};
+typedef map<string, x*>p;
+
 int main()
 {  
-	map<string, float> m;
-	m["hola"] = 10.5;
-	
+	p* m = new p;
+	string a;
+	m->insert({ a, new x });
 	Interacción();
 	return 0;
 }

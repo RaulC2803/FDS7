@@ -3,110 +3,50 @@
 #include "Menu.h"
 #include <algorithm>
 #include <functional>
+#include <map>
 
 using namespace std;
 using namespace System;
 
-class CDatos
-{
-	vector<string>*Dato;
 
-public:
-	CDatos() {
-		Dato = new vector<string>;
-	}
-
-	void agregarDato(string dato) {
-		Dato->push_back(dato);
-	}
-
-	void setDato(string t, int i) { Dato->at(i) = t; }
-	
-	string getDato(int i) { return Dato->at(i); }
-
-	int getContador() { return Dato->size(); }
-};
-
-class Fila
-{
-	int id = 0;
-	CDatos* Datos;
-public:
-	Fila(int _id, CDatos* data) {
-		id = _id;
-		Datos = data;
-	}
-	void AgregarDato(string dato) {
-		Datos->agregarDato(dato);
-	}
-	void MostrarFila()
-	{
-		cout << id;
-		for (int i = 0; i < 3; i++)
-		{
-			cout << "\t\t" << Datos->getDato(i);
-		}
-	}
-	void setDato(string n, int i) { Datos->setDato(n,i); }
-	string getDato(int i) { return Datos->getDato(i); }
-};
 
 class Columna {
-protected:
+	vector<string>* Data;
 	string Etiqueta;
 public:
-	Columna() {
+	Columna(string Etiqueta) {
+		this->Etiqueta = Etiqueta;
+		Data = new vector<string>;
 	}
 	string getEtiqueta() { return Etiqueta; }
 
-	virtual void AgregarDatos(string n) = 0;
+	void AgregarDatos(string Dato) {
+		Data->push_back(Dato);
+	}
+
+	vector<string>* getDatos() {
+		return Data;
+	}
 };
 
-class ColumnaString : public Columna {
-	vector<string>* Datos;
+typedef map<string, Columna*> Colmap;
+
+class Fila
+{
+	int id;
+	Colmap* Cols;
 public:
-	ColumnaString(string Etiqueta) : Columna() {
-		Datos = new vector<string>;
-		this->Etiqueta = Etiqueta;
-	}
-	void AgregarDatos(string n) override {
-
-		Datos->push_back(n);
-	}
-	vector<string>* getDato()
-	{
-		return Datos;
-	}
+	Fila(Colmap* Cols) : Cols (Cols) {}
+	/*string getData(string name) {
+		return Cols->at["Hola"][id];
+	}*/
 };
 
-class ColumnaLong : public Columna {
-	vector<long>* Datos;
-public:
-	ColumnaLong(string Etiqueta) : Columna() {
-		this->Etiqueta = Etiqueta;
-		Datos = new vector<long>;
-	}
-	void AgregarDatos(long n) {
-		Datos->push_back(n);
-	}
-};
-
-class ColumnaDouble : public Columna {
-	vector<double>* Datos;
-public:
-	ColumnaDouble(string Etiqueta) : Columna() {
-		Datos = new vector<double>;
-		this->Etiqueta = Etiqueta;
-	}
-	void AgregarDatos(double n) {
-		Datos->push_back(n);
-	}
-};
 
 class DataFrame
 {
 	vector<Fila*>* Filas;
-	vector<ColumnaString*>* Columnas;
+	Colmap* Columnas;
 	ifstream file;
 	int contColumnas;
 	bool isEmpty;
@@ -118,7 +58,7 @@ public:
 		isEmpty = true;
 		Filas = new vector<Fila*>;
 		contColumnas = 0;
-		Columnas = new vector<ColumnaString*>;
+		Columnas = new Colmap;
 	}
 
 	~DataFrame()
@@ -127,6 +67,7 @@ public:
 		Columnas->clear();
 	}
 
+
 	void ContarColumnas(string n_file)
 	{
 		int i = 0;
@@ -134,6 +75,7 @@ public:
 
 		string n_columna;
 		string f;
+		string x;
 
 		file.open(n_file, ios::in);
 
@@ -147,39 +89,43 @@ public:
 				{
 					if (f.at(i) == ',')
 					{
+						Columnas->insert({x , new Columna(x)});
 						contColumnas++;
+						x = "";
+					}
+					else {
+						x += f.at(i);
 					}
 
 				}
+				Columnas->insert({ x , new Columna(x) });
 				contColumnas++;
 				finish = true;
 			}
 		}
 		file.close();
-
-		for (int i = 0; i < contColumnas; i++)
-		{
-			cout << "Ingrese el nombre de la columna " << i << ": "; cin >> n_columna;
-			Columnas->push_back(new ColumnaString(n_columna));
-		}
 	}
 
 	void MostrarData() {
-		cout << "ID\t\t";
-		for (int i = 0; i < 3; i++)
+	
+		for (Colmap::iterator i = Columnas->begin(); i != Columnas->end(); i++)
 		{
-			cout << Columnas->at(i)->getEtiqueta() << "\t\t  ";
+			for (int j = 0; j < i->second->getDatos()->size(); j++) {
+				cout << i->second->getDatos()->at(j) << " ";
+			}
+			
+			cout << endl;
 		}
-		 
+		
 		cout << endl << endl;
 
-		for (int i = 0; i < Filas->size(); i++)
+		/*for (int i = 0; i < Filas->size(); i++)
 		{
 			if ((i < 9 || i >= Filas->size() - 9) && i < Filas->size())
 			{
 				Filas->at(i)->MostrarFila(); cout << endl;
 			}
-		}
+		}*/
 	}
 	bool LecturaDatos(string Archivo)
 	{
@@ -194,39 +140,41 @@ public:
 
 		while (file.good())
 		{
-			Filas->push_back(new Fila(j, new CDatos));
+			//Filas->push_back(new Fila(j, new CDatos));
 		
 			string dato = "";
 			if (Archivo.at(Archivo.size() - 3) == 'c')
 			{
-				for (int i = 0; i < contColumnas-1; i++)
+				for (Colmap::iterator i=Columnas->begin(); i!=Columnas->end();i++)
 				{
 					getline(file, dato, ',');
-					Columnas->at(i)->AgregarDatos(dato);
-					Filas->at(j)->AgregarDato(dato);
+					i->second->AgregarDatos(dato);
+					//Filas->at(j)->AgregarDato(dato);
 				}
 				getline(file, dato, '\n');
-				Columnas->at(contColumnas-1)->AgregarDatos(dato);
-				Filas->at(j)->AgregarDato(dato);
+			   //Columnas->end()->second->AgregarDatos(dato);
+				
 			}
 			else
 			{
-				for (int i = 0; i < contColumnas-1; i++)
+				for (Colmap::iterator i = Columnas->begin(); i != Columnas->end(); i++)
 				{
 					getline(file, dato, '\t');
-					Columnas->at(i)->AgregarDatos(dato);
-					Filas->at(j)->AgregarDato(dato);
+					i->second->AgregarDatos(dato);
+					
+					//Filas->at(j)->AgregarDato(dato);
 				}
 				getline(file, dato, '\n');
-				Columnas->at(contColumnas - 1)->AgregarDatos(dato);
-				Filas->at(j)->AgregarDato(dato);
+				//Columnas->end()->second->AgregarDatos(dato);
+				//Filas->at(j)->AgregarDato(dato);
 			}
 			j++;
 		}
-		Filas->pop_back();
+		//Filas->pop_back();
 		file.close();
 		return true;
 	}
+	/*
 	void GuardarDatos()
 	{
 		string nombreArchivo = "";
@@ -294,7 +242,11 @@ public:
 
 	vector<ColumnaString*>* getColumna() {
 		return this->Columnas;
-	}
+	}*/
+
+Colmap* getColumnas() {
+	return this->Columnas;
+}
 };
 
 class ListadoDF {
@@ -325,12 +277,17 @@ public:
 		else return true;
 	}
 
+	void GenerarColumnas(string Archivo) {
+		Listado->push_back(new DataFrame());
+		Listado->at(0)->ContarColumnas(Archivo);
+	}
+
 	void MostrarDFpos(int i) {
 		cout << "DATA FRAME #" << i << endl << endl;
 		Listado->at(i)->MostrarData();
 		cout << endl;
 	}
-
+/*
 	void Guardar(int i)
 	{
 		Listado->at(i)->GuardarDatos();
@@ -344,7 +301,7 @@ public:
 
 	bool OrdenarXAtributo(string B, int n) {
 		return Listado->at(n)->Ordenar(B);
-	}
+	}*/
 };
 
 template <typename T, typename R=T>
