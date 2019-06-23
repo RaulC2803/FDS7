@@ -23,16 +23,17 @@ void Interacción()
 				} while (!Listado->GenerarDF(nombreArchivo));
 
 				cout << "DATAFRAME CREADO EXITOSAMENTE" << endl;
-				cout << "Desea crear un nuevo DataFrame?(Si:1/No:0) ";
-				cin >> Opcion2;
+				cout << "Desea crear un nuevo DataFrame?(Si:1/No:0): "; cin >> Opcion2;
 				if (Opcion2 == 0)
+				{
 					break;
+				}
 			}
 			break;
 
 		case 2:
-			Listado->MostrarDF(); break;
-/*
+			Listado->MostrarDF(); system("pause>0"); break;
+
 		case 3: int i;
 			do
 			{
@@ -45,59 +46,51 @@ void Interacción()
 
 				Listado->Guardar(i);
 				cout << "DATAFRAME GUARDADO EXITOSAMENTE";
+				system("pause>0");
+
 			}
-				else { cout << "No ha igresado datos al DataFrame"; }
+			else { cout << "No ha igresado datos al DataFrame"; }
+			break;
+
+			/*case 4:
+
+				do {
+					cout << "Ingresa el Data Frame que quiere mostrar: "; cin >> Indice;
+				} while (!(Indice >= 0 && Indice < Listado->getsize()));
+
+				Listado->MostrarDFpos(Indice);
 				break;
-				
-		case 4:
 
-			do {
-				cout << "Ingresa el Data Frame que quiere mostrar: "; cin >> Indice;
-			} while (!(Indice >= 0 && Indice < Listado->getsize()));
+			case 5:
+				do{
+				cout << "Elige el Data Frame que quieres ordenar: ";
+				cin >> Indice;
 
-			Listado->MostrarDFpos(Indice);
-			break;
+				cout << "Elige la etiqueta por la que quieres ordenar: ";
 
-		case 5:
-			do{
-			cout << "Elige el Data Frame que quieres ordenar: ";
-			cin >> Indice;
-		   
-			cout << "Elige la etiqueta por la que quieres ordenar: ";
+				cin >> Busqueda;
+				} while (!(Indice >= 0 && Indice < Listado->getsize()) || !Listado->OrdenarXAtributo(Busqueda, Indice));
 
-			cin >> Busqueda;
-			} while (!(Indice >= 0 && Indice < Listado->getsize()) || !Listado->OrdenarXAtributo(Busqueda, Indice));
-		
-			break;*/
-		/*case 1: cin >> Busqueda;
-			Listado->GenerarColumnas(Busqueda);
-			break;
-		default:
-			break;*/
+				break;
+			case 1: cin >> Busqueda;
+				Listado->GenerarColumnas(Busqueda);
+				break;
+			default:
+				break;*/
 		}
 		if (Opcion == 27) break;
-		system("pause>0");
-		system("cls");
 		
+		system("cls");
 		Opcion = 0;
 		Menu(Opcion);
 	}
-	
 }
 
 
 
-class x {
-public:
-	int i = 0;
-};
-typedef map<string, x*>p;
-
 int main()
 {  
-	p* m = new p;
-	string a;
-	m->insert({ a, new x });
+
 	Interacción();
 	return 0;
 }

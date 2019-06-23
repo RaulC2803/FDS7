@@ -8,8 +8,6 @@
 using namespace std;
 using namespace System;
 
-
-
 class Columna {
 	vector<string>* Data;
 	string Etiqueta;
@@ -34,50 +32,61 @@ typedef map<string, Columna*> Colmap;
 class Fila
 {
 	int id;
-	Colmap* Cols;
 public:
-	Fila(Colmap* Cols) : Cols (Cols) {}
-	/*string getData(string name) {
-		return Cols->at["Hola"][id];
-	}*/
+	Fila(int id): id(id) {}
+	string getData(Colmap &Cols, string name) {
+		return Cols[name]->getDatos()->at(id);
+	}
 };
-
 
 class DataFrame
 {
 	vector<Fila*>* Filas;
-	Colmap* Columnas;
+	Colmap Columnas;
 	ifstream file;
+	string extension;
 	int contColumnas;
+	int contRow;
 	bool isEmpty;
 public:
 	
-
-
 	DataFrame() {
 		isEmpty = true;
 		Filas = new vector<Fila*>;
 		contColumnas = 0;
-		Columnas = new Colmap;
+		contRow = 0;
 	}
 
 	~DataFrame()
 	{
 		Filas->clear();
-		Columnas->clear();
 	}
 
+	void verificarExtension(string n_file)
+	{
+		if (n_file.at(n_file.size() - 3) == 'c')
+		{
+			extension = "csv";
+		}
+		else
+		{
+			extension = "tsv";
+		}
+	}
 
 	void ContarColumnas(string n_file)
 	{
-		int i = 0;
+		int k = 0;
 		bool finish = false;
-
+		vector<string>*etiquetas;
 		string n_columna;
 		string f;
 		string x;
 
 		file.open(n_file, ios::in);
+		etiquetas = new vector<string>;
+
+		verificarExtension(n_file);
 
 		if (!file.fail()) {
 
@@ -89,43 +98,65 @@ public:
 				{
 					if (f.at(i) == ',')
 					{
-						Columnas->insert({x , new Columna(x)});
+						etiquetas->push_back(x);
+						Columnas.insert({ etiquetas->at(k) , new Columna(etiquetas->at(k))});
 						contColumnas++;
 						x = "";
+						k++;
 					}
 					else {
-						x += f.at(i);
-					}
 
+						if (f.at(i) == '\t')
+						{
+							etiquetas->push_back(x);
+							Columnas.insert({ etiquetas->at(k) , new Columna(etiquetas->at(k)) });
+							contColumnas++;
+							x = "";
+							k++;
+						}
+						else {
+							x += f.at(i);
+						}
+					}
 				}
-				Columnas->insert({ x , new Columna(x) });
-				contColumnas++;
+				if ((f.at(f.size() - 1) != ',' && extension == "csv") || (f.at(f.size() - 1) != '\t' && extension == "tsv"))
+				{
+					etiquetas->push_back(x);
+					Columnas.insert({ etiquetas->at(k), new Columna(etiquetas->at(k)) });
+					contColumnas++;
+				}
 				finish = true;
 			}
 		}
 		file.close();
+		etiquetas->clear();
+		delete etiquetas;
 	}
 
 	void MostrarData() {
-	
-		for (Colmap::iterator i = Columnas->begin(); i != Columnas->end(); i++)
+		/*Colmap::iterator k = Columnas.begin();
+		for (int j = 0; j < k->second->getDatos()->size(); j++)
 		{
-			for (int j = 0; j < i->second->getDatos()->size(); j++) {
-				cout << i->second->getDatos()->at(j) << " ";
-			}
-			
-			cout << endl;
-		}
-		
-		cout << endl << endl;
-
-		/*for (int i = 0; i < Filas->size(); i++)
-		{
-			if ((i < 9 || i >= Filas->size() - 9) && i < Filas->size())
+			for (Colmap::iterator i = Columnas.begin(); i != Columnas.end(); i++)
 			{
-				Filas->at(i)->MostrarFila(); cout << endl;
+				cout << i->second->getDatos()->at(j) << "\t\t";
 			}
+			cout << endl;
 		}*/
+		for (int j = 0; j < contRow; j++)
+		{
+			int cont = 0;
+			if (j < 9 || j > contRow - 9)
+			{
+				for (Colmap::iterator i = Columnas.begin(); cont < 3; i++)
+				{
+					cout << Filas->at(j)->getData(Columnas, i->first) << "\t\t";
+					cont++;
+				}
+				cout << endl;
+			}
+		}
+
 	}
 	bool LecturaDatos(string Archivo)
 	{
@@ -140,41 +171,53 @@ public:
 
 		while (file.good())
 		{
-			//Filas->push_back(new Fila(j, new CDatos));
-		
+			int j = 0;
 			string dato = "";
-			if (Archivo.at(Archivo.size() - 3) == 'c')
+			if (extension == "csv")
 			{
-				for (Colmap::iterator i=Columnas->begin(); i!=Columnas->end();i++)
+				for (Colmap::iterator i= Columnas.begin(); j < contColumnas ;i++)
 				{
-					getline(file, dato, ',');
-					i->second->AgregarDatos(dato);
-					//Filas->at(j)->AgregarDato(dato);
+					if (j + 1 < contColumnas) {
+						getline(file, dato, ',');
+						i->second->AgregarDatos(dato);
+					}
+					else
+					{
+						getline(file, dato, '\n');
+						if (dato.at(dato.size() - 1) == ',')
+						{
+							dato.erase(dato.size() - 1);
+						}
+						i->second->AgregarDatos(dato);
+						Filas->push_back(new Fila(contRow));
+						contRow++;
+					}
+					j++;
 				}
-				getline(file, dato, '\n');
-			   //Columnas->end()->second->AgregarDatos(dato);
-				
 			}
 			else
 			{
-				for (Colmap::iterator i = Columnas->begin(); i != Columnas->end(); i++)
+				for (Colmap::iterator i = Columnas.begin(); j < contColumnas; i++)
 				{
-					getline(file, dato, '\t');
-					i->second->AgregarDatos(dato);
-					
-					//Filas->at(j)->AgregarDato(dato);
+					if (j + 1 < contColumnas) {
+						getline(file, dato, '\t');
+						i->second->AgregarDatos(dato);
+					}
+					else
+					{
+						getline(file, dato, '\n');
+						i->second->AgregarDatos(dato);
+						Filas->push_back(new Fila(contRow));
+						contRow++;
+					}
+					j++;
 				}
-				getline(file, dato, '\n');
-				//Columnas->end()->second->AgregarDatos(dato);
-				//Filas->at(j)->AgregarDato(dato);
 			}
-			j++;
 		}
-		//Filas->pop_back();
 		file.close();
 		return true;
 	}
-	/*
+
 	void GuardarDatos()
 	{
 		string nombreArchivo = "";
@@ -187,34 +230,46 @@ public:
 			cout << "Cual extension usara? csv o tsv: "; cin >> extension;
 
 		} while (extension != "csv" && extension != "tsv");
-		
+
 		nombreArchivo += "." + extension;
 		file.open(nombreArchivo);
 
-		for (int i = 0; i < Filas->size(); i++)
+		Colmap::iterator k = Columnas.begin();
+
+		for (int j = 0; j < k->second->getDatos()->size()-1; j++)
 		{
-			for (int j = 0; j < contColumnas; j++)
+			int o = 0;
+
+			for (Colmap::iterator i = Columnas.begin(); i != Columnas.end(); i++)
 			{
-				if (j != contColumnas - 1)
-				{
-					if (extension == "csv") {
-						file << Filas->at(i)->getDato(j); file << ",";
+				if (extension == "csv") {
+					if (o+1 <= contColumnas)
+					{
+						file << i->second->getDatos()->at(j); file << ",";
 					}
 					else
 					{
-						file << Filas->at(i)->getDato(j); file << "\t";
+						file << i->second->getDatos()->at(j);
 					}
 				}
 				else
 				{
-					file << Filas->at(i)->getDato(j); file;
+					if (o +1 <= contColumnas)
+					{
+						file << i->second->getDatos()->at(j); file << "\t";
+					}
+					else
+					{
+						file << i->second->getDatos()->at(j);
+					}
 				}
+				o++;
 			}
 			file << "\n";
 		}
 		file.close();
 	}
-	bool Ordenar(string busqueda)
+	/*bool Ordenar(string busqueda)
 	{
 		
 		int i;
@@ -230,9 +285,7 @@ public:
 		auto lmb = [](string c) {return c; };
 		InsertionSort<string, string, Fila*>(Columnas->at(i)->getDato(),Filas, lmb); 	
 		return true;
-	}
-
-	
+	}*/
 
 	bool getIsEmpty() { return isEmpty; }
 
@@ -240,11 +293,7 @@ public:
 		return this->Filas;
 	}
 
-	vector<ColumnaString*>* getColumna() {
-		return this->Columnas;
-	}*/
-
-Colmap* getColumnas() {
+Colmap getColumnas() {
 	return this->Columnas;
 }
 };
@@ -287,7 +336,7 @@ public:
 		Listado->at(i)->MostrarData();
 		cout << endl;
 	}
-/*
+
 	void Guardar(int i)
 	{
 		Listado->at(i)->GuardarDatos();
@@ -299,7 +348,7 @@ public:
 		return Listado->size();
 	}
 
-	bool OrdenarXAtributo(string B, int n) {
+	/*bool OrdenarXAtributo(string B, int n) {
 		return Listado->at(n)->Ordenar(B);
 	}*/
 };

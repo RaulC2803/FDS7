@@ -130,5 +130,4 @@ void Menu(int &Opcion) {
 		configurarColorFondo(Negro);
 		system("cls");
 	}
-
 }
