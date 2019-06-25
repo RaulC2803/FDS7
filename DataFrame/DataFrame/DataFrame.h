@@ -165,11 +165,10 @@ typedef map<string, Columna*> Colmap;
 class Fila
 {
 	int id;
-	Colmap Col;
 
 public:
-	Fila(Colmap Col,int id): id(id), Col(Col) {}
-	string getData(string name) {
+	Fila(int id): id(id) {}
+	string getData(Colmap &Col, string name) {
 		return Col[name]->getDatos()->at(id);
 	}
 };
@@ -199,14 +198,18 @@ public:
 
 	void verificarExtension(string n_file)
 	{
-		if (n_file.at(n_file.size() - 3) == 'c')
+		if (n_file.size() >= 3)
 		{
-			extension = "csv";
+			if (n_file.at(n_file.size() - 3) == 'c')
+			{
+				extension = "csv";
+			}
+			else
+			{
+				extension = "tsv";
+			}
 		}
-		else
-		{
-			extension = "tsv";
-		}
+		else extension = "";
 	}
 
 	void ContarColumnas(string n_file)
@@ -285,7 +288,7 @@ public:
 			{
 				for (Colmap::iterator i = Columnas.begin(); cont < 3; i++)
 				{
-					cout << Filas->at(j)->getData(i->first) << "\t\t";
+					cout << Filas->at(j)->getData(Columnas,i->first) << "\t\t";
 					cont++;
 				}
 				cout << endl;
@@ -324,7 +327,7 @@ public:
 							dato.erase(dato.size() - 1);
 						}
 						i->second->AgregarDatos(dato);
-						Filas->push_back(new Fila(Columnas,contRow));
+						Filas->push_back(new Fila(contRow));
 						contRow++;
 					}
 					j++;
@@ -332,20 +335,26 @@ public:
 			}
 			else
 			{
-				for (Colmap::iterator i = Columnas.begin(); j < contColumnas; i++)
-				{
-					if (j + 1 < contColumnas) {
-						getline(file, dato, '\t');
-						i->second->AgregarDatos(dato);
-					}
-					else
+				if (extension == "tsv") {
+					for (Colmap::iterator i = Columnas.begin(); j < contColumnas; i++)
 					{
+						if (j + 1 < contColumnas) {
+							getline(file, dato, '\t');
+							i->second->AgregarDatos(dato);
+						}
+						else
+						{
+							getline(file, dato, '\n');
+							i->second->AgregarDatos(dato);
+							Filas->push_back(new Fila(contRow));
+							contRow++;
+						}
+						j++;
 						getline(file, dato, '\n');
 						i->second->AgregarDatos(dato);
-						Filas->push_back(new Fila(Columnas, contRow));
+						Filas->push_back(new Fila(contRow));
 						contRow++;
 					}
-					j++;
 				}
 			}
 		}
@@ -418,7 +427,7 @@ public:
 		NDF->Columnas = this->Columnas;
 		for (int i = 0; i < contRow; i++) {
 			if (this->Columnas.at(F1)->getDatos()->at(i) == F2) {
-				NDF->Filas->push_back(new Fila(Columnas, i));
+				NDF->Filas->push_back(new Fila(i));
 			}
 		}
 		return NDF;
