@@ -216,6 +216,7 @@ public:
 				extension = "tsv";
 			}
 		}
+		else extension = "";
 	}
 
 	void ContarColumnas(string n_file)
