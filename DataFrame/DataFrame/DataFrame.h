@@ -176,6 +176,7 @@ public:
 class DataFrame
 {
 	vector<Fila*>* Filas;
+	vector<string>*etiquetas;
 	Colmap Columnas;
 	ifstream file;
 	string extension;
@@ -187,6 +188,7 @@ public:
 	DataFrame() {
 		isEmpty = true;
 		Filas = new vector<Fila*>;
+		etiquetas = new vector<string>;
 		contColumnas = 0;
 		contRow = 0;
 	}
@@ -216,13 +218,11 @@ public:
 	{
 		int k = 0;
 		bool finish = false;
-		vector<string>*etiquetas;
 		string n_columna;
 		string f;
 		string x;
 
 		file.open(n_file, ios::in);
-		etiquetas = new vector<string>;
 
 		verificarExtension(n_file);
 
@@ -267,8 +267,6 @@ public:
 			}
 		}
 		file.close();
-		etiquetas->clear();
-		delete etiquetas;
 	}
 
 	void MostrarData() {
@@ -313,11 +311,11 @@ public:
 			string dato = "";
 			if (extension == "csv")
 			{
-				for (Colmap::iterator i= Columnas.begin(); j < contColumnas ;i++)
+				for (int i = 0; j < contColumnas ;i++)
 				{
 					if (j + 1 < contColumnas) {
 						getline(file, dato, ',');
-						i->second->AgregarDatos(dato);
+						Columnas[etiquetas->at(j)]->AgregarDatos(dato);
 					}
 					else
 					{
@@ -326,7 +324,7 @@ public:
 						{
 							dato.erase(dato.size() - 1);
 						}
-						i->second->AgregarDatos(dato);
+						Columnas[etiquetas->at(j)]->AgregarDatos(dato);
 						Filas->push_back(new Fila(contRow));
 						contRow++;
 					}
@@ -336,24 +334,24 @@ public:
 			else
 			{
 				if (extension == "tsv") {
-					for (Colmap::iterator i = Columnas.begin(); j < contColumnas; i++)
+					for (int i = 0; j < contColumnas; i++)
 					{
 						if (j + 1 < contColumnas) {
 							getline(file, dato, '\t');
-							i->second->AgregarDatos(dato);
+							Columnas[etiquetas->at(j)]->AgregarDatos(dato);
 						}
 						else
 						{
 							getline(file, dato, '\n');
-							i->second->AgregarDatos(dato);
+							if (dato.at(dato.size() - 1) == '\t')
+							{
+								dato.erase(dato.size() - 1);
+							}
+							Columnas[etiquetas->at(j)]->AgregarDatos(dato);
 							Filas->push_back(new Fila(contRow));
 							contRow++;
 						}
 						j++;
-						getline(file, dato, '\n');
-						i->second->AgregarDatos(dato);
-						Filas->push_back(new Fila(contRow));
-						contRow++;
 					}
 				}
 			}
