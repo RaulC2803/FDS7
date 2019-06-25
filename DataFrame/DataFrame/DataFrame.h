@@ -192,6 +192,7 @@ public:
 		etiquetas = new vector<string>;
 		contColumnas = 0;
 		contRow = 0;
+		extension = "";
 	}
 
 	~DataFrame()
@@ -212,7 +213,6 @@ public:
 				extension = "tsv";
 			}
 		}
-		else extension = "";
 	}
 
 	void ContarColumnas(string n_file)
@@ -414,9 +414,12 @@ public:
 	DataFrame* FiltrarIguala(string F1, string F2) {
 		DataFrame* NDF = new DataFrame();
 		NDF->Columnas = this->Columnas;
+		NDF->setContCols(contColumnas);
+		NDF->IniEtiqueta(etiquetas);
 		for (int i = 0; i < contRow; i++) {
-			if (this->Columnas.at(F1)->getDatos()->at(i) == F2) {
+			if (Columnas[F1]->getDatos()->at(i) == F2) {
 				NDF->Filas->push_back(new Fila(i));
+				NDF->SumarRow();
 			}
 		}
 		return NDF;
@@ -448,7 +451,15 @@ public:
 Colmap getColumnas() {
 	return this->Columnas;
 }
+void setContCols(int _cont) { contColumnas = _cont; }
+void SumarRow() { contRow++; }
+void SumarCols() { contColumnas++; }
+void IniEtiqueta(vector<string>*_etiquetas) { etiquetas = _etiquetas; }
 };
+
+
+//////////////////////Listado///////////////////////////
+
 
 class ListadoDF {
 	vector<DataFrame*>* Listado;
