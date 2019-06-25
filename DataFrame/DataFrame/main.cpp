@@ -76,23 +76,11 @@ void Interacción()
 				if (f2 == 1) {
 					cin >> c1;
 					cin >> c2;
-					Listado->Filtrado(Indice, c1, c2, "", "");
+					Listado->Filtrado(Indice, c1, c2, "", ""); break;
 				}
-				break;
-			default: break;
 			}
-			
-			break;
-			/*case 4:
 
-				do {
-					cout << "Ingresa el Data Frame que quiere mostrar: "; cin >> Indice;
-				} while (!(Indice >= 0 && Indice < Listado->getsize()));
-
-				Listado->MostrarDFpos(Indice);
-				break;
-
-			case 5:
+			case 6:
 				do{
 				cout << "Elige el Data Frame que quieres ordenar: ";
 				cin >> Indice;
@@ -100,14 +88,11 @@ void Interacción()
 				cout << "Elige la etiqueta por la que quieres ordenar: ";
 
 				cin >> Busqueda;
-				} while (!(Indice >= 0 && Indice < Listado->getsize()) || !Listado->OrdenarXAtributo(Busqueda, Indice));
-
-				break;
-			case 1: cin >> Busqueda;
-				Listado->GenerarColumnas(Busqueda);
+				} while (!(Indice >= 0 && Indice < Listado->getsize()));
+				Listado->OrdenarXAtributo(Busqueda, Indice);
 				break;
 			default:
-				break;*/
+				break;
 		}
 		if (Opcion == 27) break;
 		

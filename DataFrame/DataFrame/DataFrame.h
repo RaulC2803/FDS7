@@ -1,9 +1,12 @@
-#include "BusquedayOrdenamiento.hpp"
 #include <fstream>
-#include "Menu.h"
-#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <string>
 #include <functional>
 #include <map>
+#include <algorithm>
+#include "Menu.h"
+
 
 using namespace std;
 using namespace System;
@@ -424,23 +427,52 @@ public:
 		}
 		return NDF;
 	}
-	/*bool Ordenar(string busqueda)
+
+	template<typename T,typename R = T>
+	void InsertionSort(DataFrame* NDF, string _etiqueta, function<R(T)> key = [](T a) {return a; })
 	{
-		
-		int i;
-		for (i = 0; i < contColumnas; i++) {
-			if (Columnas->at(i)->getEtiqueta() == busqueda) {
-				
-				break;
+		/*if (NDF->Filas->at(1)->getData(Columnas, _etiqueta).at(1) <= 48 && NDF->Filas->at(1)->getData(Columnas, _etiqueta).at(1) <= 57)
+		{
+			for (int i = 1; i < contRow; i++)
+			{
+				atoi(NDF->Filas->at(i)->getData(Columnas, _etiqueta).c_str());
 			}
 		}
-		if (i == contColumnas) {
-			return false;
+*/
+		for (int i = 0; i < contRow; i++)
+		{
+			NDF->Filas->push_back(new Fila(Filas->at(i)->getID()));
+			NDF->SumarRow();
 		}
+
+		for (int i = 1; i < contRow; i++)
+		{
+
+			Fila* aux = NDF->Filas->at(i);
+			T temp = NDF->Filas->at(i)->getData(Columnas, _etiqueta);
+			int j = i;
+			while (j > 0 && key(NDF->Filas->at(j - 1)->getData(Columnas, _etiqueta)) > key(temp))
+			{
+				NDF->Filas->at(j) = NDF->Filas->at(j - 1);
+				j--;
+			}
+			if (i != j)
+			{
+				NDF->Filas->at(j) = aux;
+			}
+		}
+	}
+
+	DataFrame* Ordenar(string busqueda)
+	{
+		DataFrame *NDF = new DataFrame();
+		NDF->Columnas = this->Columnas;
+		NDF->setContCols(contColumnas);
+		NDF->IniEtiqueta(etiquetas);
 		auto lmb = [](string c) {return c; };
-		InsertionSort<string, string, Fila*>(Columnas->at(i)->getDato(),Filas, lmb); 	
-		return true;
-	}*/
+		InsertionSort<string, string>(NDF,busqueda,lmb);
+		return NDF;
+	}
 
 	bool getIsEmpty() { return isEmpty; }
 
@@ -452,6 +484,7 @@ Colmap getColumnas() {
 	return this->Columnas;
 }
 void setContCols(int _cont) { contColumnas = _cont; }
+void setContRow(int _cont) { contRow = _cont; }
 void SumarRow() { contRow++; }
 void SumarCols() { contColumnas++; }
 void IniEtiqueta(vector<string>*_etiquetas) { etiquetas = _etiquetas; }
@@ -519,9 +552,9 @@ public:
 		return this->Listado;
 	}
 
-	/*bool OrdenarXAtributo(string B, int n) {
-		return Listado->at(n)->Ordenar(B);
-	}*/
+	void OrdenarXAtributo(string B, int n) {
+		Listado->push_back(Listado->at(n)->Ordenar(B));
+	}
 };
 
 

@@ -101,13 +101,12 @@ void Menu(int &Opcion) {
 		cout << "\t\t\t\t      " << char(186) << "\t\t       MENU\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "\t\t\t\t\t    " << char(186) << endl;
-		cout << "\t\t\t\t      " << char(186) << "    1. Crear Dataframe\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    1. Crear   Dataframe\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    2. Mostrar Dataframe\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    3. Guardar DataFrame\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    4. Filtrar DataFraME\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    27. Salir           \t\t    " << char(186) << endl;
-		//Guardar DF
-		//Mostrar DF (Seleccion)
-		//Listar DFs
+		
 		//(OPCIONAL)Crear DF(Crear un nuevo data frame con lo indicado, desde otro data frame 
 		//-Seleccionar
 		//-Operación
@@ -122,7 +121,7 @@ void Menu(int &Opcion) {
 
 		configurarColorTexto(Verde);
 		do {
-			Console::SetCursorPosition(48, 36);
+			Console::SetCursorPosition(48, 38);
 			cout << "ELIJA UNA OPCION: ";
 			cin >> Opcion;
 		} while (!(Opcion >= 1 && Opcion <= 9 || Opcion == 27));

@@ -14,16 +14,14 @@ void InsertionSort(vector<T>* columnas, vector<U>* filas, function<R(T)> key = [
 		T aux = columnas->at(i);
 		U temp = filas->at(i);
 		int j = i;
-		while (j> 0 && key(columnas->at(j-1)) > key(aux))
+		while (j > 0 && key(columnas->at(j-1)) > key(aux))
 		{
 			filas->at(j) = filas->at(j - 1);
-			columnas->at(j) = columnas->at(j - 1);
 			j--;
 		}
 		if (i != j)
 		{
 			filas->at(j) = temp;
-			columnas->at(j) = aux;
 		}
 	}
 }
