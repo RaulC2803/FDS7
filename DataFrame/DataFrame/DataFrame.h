@@ -8,6 +8,139 @@
 using namespace std;
 using namespace System;
 
+template <typename T, typename R = T>
+class Tree
+{
+	struct Node
+	{
+		float elem;
+		Node* left;
+		Node* right;
+		int h;
+
+		Node(float elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
+
+		static int height(Node* n)
+		{
+			return n == nullptr ? -1 : n->h;
+		}
+		void updateH() {
+			h = std::max(Node::height(left), Node::height(right)) + 1;
+		}
+	};
+
+	Node* root;
+	int length;
+	std::function<R(T)> key;
+
+	void borrar(Node* node)
+	{
+		if (node != nullptr) {
+			borrar(node->left);
+			borrar(node->right);
+			delete node;
+		}
+	}
+
+	void rotAB(Node*& node)
+	{
+		Node* aux = node->left;
+		node->left = aux->right;
+		node->updateH();
+		aux->right = node;
+		node = aux;
+		node->updateH();
+	}
+
+	void rotBA(Node*& node)
+	{
+		Node* aux = node->right;
+		n->right = aux->left;
+		node->updateH();
+		aux->left = node;
+		node = aux;
+		node->updateH;
+	}
+
+	void balance(Node*& n)
+	{
+		int delta = Node::height(n->left) - Node::height(n->right);
+		if (delta < -1) {
+			if (Node::height(n->right->left) > Node::height(n->right->right)) {
+				rotAB(n->right);
+			}
+			rotBA(n);
+		}
+		else if (delta > 1) {
+			if (Node::height(n->left->right) > Node::height(n->left->left))
+			{
+				rotBA(n->left);
+			}
+			rotAB(n);
+		}
+	}
+
+	void add(Node*& node, T elem) {
+		if (node == nullptr)
+		{
+			node = new Node(elem);
+		}
+		else if (key(elem) < key(node->elem)) {
+			add(node->left, elem);
+		}
+		else {
+			add(node->right, elem);
+		}
+		node->updateH();
+	}
+
+	void InOrder(Node* node, std::function<void(float)> doSomething) {
+		if (node != nullptr)
+		{
+			InOrder(node->left, doSomething);
+			doSomething(node->elem);
+			InOrder(node->right, doSomething);
+		}
+	}
+
+	Node* Mayor(Node* node) {
+		if (node != nullptr) {
+			if (node->right == nullptr) {
+				return node;
+			}
+			else {
+				return node->right;
+			}
+		}
+		return nullptr;
+	}
+public:
+
+	Tree(std::function<R(T)>key = [](T a) {return a; }) :root(nullptr), length(0), key(key) {}
+	~Tree() { borrar(root); }
+
+	int Height() {
+		return Node::height(root);
+	}
+	int size() {
+		return length;
+	}
+
+	void add(T elem) { add(root, elem); length++; }
+
+	void InOrder(std::function<void(float)>doSomething)
+	{
+		InOrder(root, doSomething);
+	}
+
+	float Mayor() {
+		Node* node = Mayor(root);
+		if (node != nullptr) {
+			return node->elem;
+		}
+	}
+};
+
 class Columna {
 	vector<string>* Data;
 	string Etiqueta;
@@ -32,10 +165,12 @@ typedef map<string, Columna*> Colmap;
 class Fila
 {
 	int id;
+	Colmap Col;
+
 public:
-	Fila(int id): id(id) {}
-	string getData(Colmap &Cols, string name) {
-		return Cols[name]->getDatos()->at(id);
+	Fila(Colmap Col,int id): id(id), Col(Col) {}
+	string getData(string name) {
+		return Col[name]->getDatos()->at(id);
 	}
 };
 
@@ -150,7 +285,7 @@ public:
 			{
 				for (Colmap::iterator i = Columnas.begin(); cont < 3; i++)
 				{
-					cout << Filas->at(j)->getData(Columnas, i->first) << "\t\t";
+					cout << Filas->at(j)->getData(i->first) << "\t\t";
 					cont++;
 				}
 				cout << endl;
@@ -189,7 +324,7 @@ public:
 							dato.erase(dato.size() - 1);
 						}
 						i->second->AgregarDatos(dato);
-						Filas->push_back(new Fila(contRow));
+						Filas->push_back(new Fila(Columnas,contRow));
 						contRow++;
 					}
 					j++;
@@ -207,7 +342,7 @@ public:
 					{
 						getline(file, dato, '\n');
 						i->second->AgregarDatos(dato);
-						Filas->push_back(new Fila(contRow));
+						Filas->push_back(new Fila(Columnas, contRow));
 						contRow++;
 					}
 					j++;
@@ -268,6 +403,25 @@ public:
 			file << "\n";
 		}
 		file.close();
+	}
+
+	/*void Index(string Columna) {
+		Tree<Fila*, string>* T = new Tree<Fila*, string>(
+			[=](Fila* R) {return R->getData(Columna); });
+		for (int i = 0; i < Filas->size();i++) {
+			T->add(Filas->at(i));
+		}
+	}*/
+
+	DataFrame* FiltrarIguala(string F1, string F2) {
+		DataFrame* NDF = new DataFrame();
+		NDF->Columnas = this->Columnas;
+		for (int i = 0; i < contRow; i++) {
+			if (this->Columnas.at(F1)->getDatos()->at(i) == F2) {
+				NDF->Filas->push_back(new Fila(Columnas, i));
+			}
+		}
+		return NDF;
 	}
 	/*bool Ordenar(string busqueda)
 	{
@@ -348,140 +502,17 @@ public:
 		return Listado->size();
 	}
 
+	void Filtrado(int i,string c1, string c2, string c3, string c4) {
+		Listado->push_back(Listado->at(i)->FiltrarIguala(c1, c2));
+	}
+
+	vector<DataFrame*>* getDFS() {
+		return this->Listado;
+	}
+
 	/*bool OrdenarXAtributo(string B, int n) {
 		return Listado->at(n)->Ordenar(B);
 	}*/
 };
 
-template <typename T, typename R=T>
-class Tree
-{
-	struct Node
-	{
-		float elem;
-		Node* left;
-		Node* right;
-		int h;
 
-		Node(float elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
-
-		static int height(Node* n)
-		{
-			return n == nullptr ? -1 : n->h;
-		}
-		void updateH() {
-			h = std::max(Node::height(left), Node::height(right)) + 1;
-		}
-	};
-
-	Node* root;
-	int length;
-	std::function<R(T)> key;
-
-	void borrar(Node* node)
-	{
-		if (node != nullptr) {
-			borrar(node->left);
-			borrar(node->right);
-			delete node;
-		}
-	}
-
-	void rotAB(Node*& node)
-	{
-		Node* aux = node->left;
-		node->left = aux->right;
-		node->updateH();
-		aux->right = node;
-		node = aux;
-		node->updateH();
-	}
-
-	void rotBA(Node*& node)
-	{
-		Node* aux = node->right;
-		n->right = aux->left;
-		node->updateH();
-		aux->left = node;
-		node = aux;
-		node->updateH;
-	}
-
-	void balance(Node*& n)
-	{
-		int delta = Node::height(n->left) - Node::height(n->right);
-		if (delta < -1) {
-			if (Node::height(n->right->left) > Node::height(n->right->right)) {
-				rotAB(n->right);
-			}
-			rotBA(n);
-		}
-		else if (delta > 1) {
-			if (Node::height(n->left->right) > Node::height(n->left->left))
-			{
-				rotBA(n->left);
-			}
-			rotAB(n);
-		}
-	}
-
-	void add(Node*& node, T elem) {
-		if (node == nullptr)
-		{
-			node = new Node(elem);
-		}
-		else if (key(elem) < key(node->elem)) {
-			add(node->left, elem);
-		}
-		else {
-			add(node->right, elem);
-		}
-		node->updateH();
-	}
-
-	void InOrder(Node* node, std::function<void(float)> doSomething) {
-		if (node != nullptr)
-		{
-			InOrder(node->left, doSomething);
-			doSomething(node->elem);
-			InOrder(node->right, doSomething);
-		}
-	}
-
-	Node* Mayor(Node* node) {
-		if (node != nullptr) {
-			if (node->right == nullptr) {
-				return node;
-			}
-			else {
-				return node->right;
-			}
-		}
-		return nullptr;
-	}
-public:
-
-	Tree(std::function<R(T)>key = [](T a) {return a;}) :root(nullptr), length(0), key(key) {}
-	~Tree() { borrar(root); }
-
-	int Height() {
-		return Node::height(root);
-	}
-	int size() {
-		return length;
-	}
-
-	void add(T elem) { add(root, elem); length++; }
-
-	void InOrder(std::function<void(float)>doSomething)
-	{
-		InOrder(root, doSomething);
-	}
-
-	float Mayor() {
-		Node* node = Mayor(root);
-		if (node != nullptr) {
-			return node->elem;
-		}
-	}
-};
