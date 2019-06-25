@@ -64,14 +64,18 @@ public:
 
 	void verificarExtension(string n_file)
 	{
-		if (n_file.at(n_file.size() - 3) == 'c')
+		if (n_file.size() >= 3)
 		{
-			extension = "csv";
+			if (n_file.at(n_file.size() - 3) == 'c')
+			{
+				extension = "csv";
+			}
+			else
+			{
+				extension = "tsv";
+			}
 		}
-		else
-		{
-			extension = "tsv";
-		}
+		else extension = "";
 	}
 
 	void ContarColumnas(string n_file)
@@ -197,20 +201,22 @@ public:
 			}
 			else
 			{
-				for (Colmap::iterator i = Columnas.begin(); j < contColumnas; i++)
-				{
-					if (j + 1 < contColumnas) {
-						getline(file, dato, '\t');
-						i->second->AgregarDatos(dato);
-					}
-					else
+				if (extension == "tsv") {
+					for (Colmap::iterator i = Columnas.begin(); j < contColumnas; i++)
 					{
-						getline(file, dato, '\n');
-						i->second->AgregarDatos(dato);
-						Filas->push_back(new Fila(contRow));
-						contRow++;
+						if (j + 1 < contColumnas) {
+							getline(file, dato, '\t');
+							i->second->AgregarDatos(dato);
+						}
+						else
+						{
+							getline(file, dato, '\n');
+							i->second->AgregarDatos(dato);
+							Filas->push_back(new Fila(contRow));
+							contRow++;
+						}
+						j++;
 					}
-					j++;
 				}
 			}
 		}
