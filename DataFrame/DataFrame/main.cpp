@@ -6,10 +6,10 @@ void Interacción()
 {
 	ListadoDF* Listado = new ListadoDF;
 	int Opcion = 0;
-	int Opcion2, Indice;
+	int Opcion2, Indice, Filtro, f2;
 	string Busqueda;
 	Menu(Opcion);
-
+	string c1, c2, c3, c4;
 	string nombreArchivo;
 
 	while (true)
@@ -51,7 +51,38 @@ void Interacción()
 			}
 			else { cout << "No ha igresado datos al DataFrame"; }
 			break;
+		case 4:
+			do {
+				cout << "Ingresa el Data Frame que quieres filtrar: "; cin >> Indice;
+			} while (!(Indice >= 0 && Indice < Listado->getsize()));
+			do {
+				cout << "Ingresa el criterio por el cual quieres filtrar: " << endl;
+				cout << "1. Mayor " << endl;
+				cout << "2. Menor " << endl;
+				cout << "3. Inicia con " << endl;
+				cout << "4. Termina con " << endl;
+				cout << "5. Igual a " << endl;
+				cout << "6. Contenido en " << endl;
+				cout << "7. No Contenido en " << endl;
+				cin >> Filtro;
+				
+			} while (!(Filtro >= 1 && Filtro < 7));
+			do {
+				cout << "Numero de Columnas por las que quieres realizar el filtro: "; cin >> f2;
 
+			} while (!(f2 >= 1 && f2 <= 2));
+			switch (Filtro) {
+			case 5:
+				if (f2 == 1) {
+					cin >> c1;
+					cin >> c2;
+					Listado->Filtrado(Indice, c1, c2, "", "");
+				}
+				break;
+			default: break;
+			}
+			
+			break;
 			/*case 4:
 
 				do {
