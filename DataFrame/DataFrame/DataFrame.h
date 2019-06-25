@@ -171,6 +171,7 @@ public:
 	string getData(Colmap &Col, string name) {
 		return Col[name]->getDatos()->at(id);
 	}
+	int getID() { return id; }
 };
 
 class DataFrame
@@ -270,24 +271,16 @@ public:
 	}
 
 	void MostrarData() {
-		/*Colmap::iterator k = Columnas.begin();
-		for (int j = 0; j < k->second->getDatos()->size(); j++)
-		{
-			for (Colmap::iterator i = Columnas.begin(); i != Columnas.end(); i++)
-			{
-				cout << i->second->getDatos()->at(j) << "\t\t";
-			}
-			cout << endl;
-		}*/
+
 		for (int j = 0; j < contRow; j++)
 		{
-			int cont = 0;
-			if (j < 9 || j > contRow - 9)
+			if (j < 9 || j >= contRow - 9)
 			{
-				for (Colmap::iterator i = Columnas.begin(); cont < 3; i++)
+				cout << Filas->at(j)->getID() << "\t";
+
+				for (int i = 0; i < 3; i++)
 				{
-					cout << Filas->at(j)->getData(Columnas,i->first) << "\t\t";
-					cont++;
+					cout << Filas->at(j)->getData(Columnas,etiquetas->at(i)) << "\t\t";
 				}
 				cout << endl;
 			}
@@ -378,35 +371,33 @@ public:
 
 		Colmap::iterator k = Columnas.begin();
 
-		for (int j = 0; j < k->second->getDatos()->size()-1; j++)
+		for (int j = 0; j < k->second->getDatos()->size(); j++)
 		{
-			int o = 0;
-
-			for (Colmap::iterator i = Columnas.begin(); i != Columnas.end(); i++)
+			for (int i = 0; i < contColumnas; i++)
 			{
 				if (extension == "csv") {
-					if (o+1 <= contColumnas)
+					if (i+1 <= contColumnas)
 					{
-						file << i->second->getDatos()->at(j); file << ",";
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(j); file << ",";
 					}
 					else
 					{
-						file << i->second->getDatos()->at(j);
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(j);
 					}
 				}
 				else
 				{
-					if (o +1 <= contColumnas)
+					if (i + 1 <= contColumnas)
 					{
-						file << i->second->getDatos()->at(j); file << "\t";
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(j); file << "\t";
 					}
 					else
 					{
-						file << i->second->getDatos()->at(j);
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(j);
 					}
 				}
-				o++;
 			}
+			if(j + 1 < k->second->getDatos()->size())
 			file << "\n";
 		}
 		file.close();
