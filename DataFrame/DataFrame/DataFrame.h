@@ -292,14 +292,6 @@ public:
 
 	}
 
-	double verificarTipo(string _dato)
-	{
-		if (_dato.at(0) <= 48 && _dato.at(0) <= 57) {
-			return atoi(_dato.c_str);
-		}
-		else return -23;
-	}
-
 	bool LecturaDatos(string Archivo)
 	{
 		ContarColumnas(Archivo);
@@ -440,29 +432,34 @@ public:
 	template<typename T,typename R = T>
 	void InsertionSort(DataFrame* NDF, string _etiqueta, function<R(T)> key = [](T a) {return a; })
 	{
-		string temp = "";
+		string tmp; 
+		string tmp1;
 			*NDF->Filas = *Filas;
 			NDF->setContRow(contRow);
 		
-		for (int i = 1; i < contRow; i++)
-		{
-			T aux = NDF->Filas->at(i);
-			int j = i;
-			if (key(NDF->Filas->at(j - 1)).at(0) <= 48 && (key(NDF->Filas->at(j - 1)).at(0) <= 57)
+			if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
 			{
-				temp = key(NDF->Filas->at(j - 1);
-				atoi(temp.c_str);
+				for (int i = 1; i < contRow; i++)
+				{
+					T aux = NDF->Filas->at(i);
+					int j = i;
+					tmp = key(aux);
+					tmp1 = key(NDF->Filas->at(j - 1));
+					double d = atof(tmp1.c_str());
+					double e = atof(tmp.c_str());
+					while (j > 0 && d >  e)
+					{
+						NDF->Filas->at(j) = NDF->Filas->at(j - 1);
+						j--;
+						tmp1 = key(NDF->Filas->at(j - 1));
+						d = atof(tmp1.c_str());
+					}
+					if (i != j)
+					{
+						NDF->Filas->at(j) = aux;
+					}
+				}
 			}
-			while (j > 0 && key(NDF->Filas->at(j - 1)) > key(aux))
-			{
-				NDF->Filas->at(j) = NDF->Filas->at(j - 1);
-				j--;
-			}
-			if (i != j)
-			{
-				NDF->Filas->at(j) = aux;
-			}
-		}
 	}
 
 	DataFrame* Ordenar(string busqueda)
