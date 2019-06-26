@@ -464,34 +464,68 @@ public:
 	}
 
 	template<typename T,typename R = T>
-	void InsertionSort(DataFrame* NDF, string _etiqueta, function<R(T)> key = [](T a) {return a; })
-	{
-		string tmp; 
-		string tmp1;
-			
-			if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
+	void InsertionSort(DataFrame* NDF, vector<double>* aux, string _etiqueta, function<R(T)> key = [](T a) {return a; })
+	{		
+		if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
+		{
+			for (int i = 2; i < contRow; i++)
 			{
-				for (int i = 2; i < contRow; i++)
+				double e = aux->at(i);
+				T temp = NDF->Filas->at(i);
+				int j = i;
+
+				while (j > 1 && aux->at(j-1) > e)
 				{
-					T aux = NDF->Filas->at(i);
-					int j = i;
-					tmp = key(aux);
-					while (j > 1 && atof(key(NDF->Filas->at(j - 1)).c_str()) > atof(tmp.c_str()))
-					{
-						NDF->Filas->at(j) = NDF->Filas->at(j - 1);
-						j--;
-					}
-					if (i != j)
-					{
-						NDF->Filas->at(j) = aux;
-					}
+					NDF->Filas->at(j) = NDF->Filas->at(j - 1);
+					aux->at(j) = aux->at(j - 1);
+					j--;
+				}
+				if (i != j)
+				{
+					NDF->Filas->at(j) = temp;
+					aux->at(j) = e;
 				}
 			}
+		}
+		else
+		{
+			for (int i = 2; i < contRow; i++)
+			{
+				T temp = NDF->Filas->at(i);
+				int j = i;
 
+				while (j > 1 && key(NDF->Filas->at(j-1)) > key(temp))
+				{
+					NDF->Filas->at(j) = NDF->Filas->at(j - 1);
+					j--;
+				}
+				if (i != j)
+				{
+					NDF->Filas->at(j) = temp;
+				}
+			}
+		}
 	}
 
-	DataFrame* Ordenar(string busqueda)
+	template<typename T, typename R=T>
+	void ConvertirDatos(vector<double>* aux, function<R(T)> key = [](T a) {return a; })
 	{
+		if (key(Filas->at(1)).at(0) >= 48 && key(Filas->at(1)).at(0) <= 57)
+		{
+			aux->push_back(0);
+			for (int i = 1; i < contRow; i++)
+			{
+				string temp = key(Filas->at(i));
+				aux->push_back(atof(temp.c_str()));
+			}
+		}
+	}
+
+	DataFrame* Ordenar(string _etiqueta)
+	{
+		vector<double>* aux;
+		aux = new vector<double>;
+
 		DataFrame *NDF = new DataFrame();
 		NDF->Columnas = this->Columnas;
 		NDF->setContCols(contColumnas);
@@ -499,8 +533,10 @@ public:
 		*NDF->Filas = *Filas;
 		NDF->setContRow(contRow);
 		NDF->setIsEmpty();
-		auto lmb = [&](Fila* row) {return row->getData(Columnas, busqueda); };
-		InsertionSort<Fila*, string>(NDF,busqueda,lmb);
+
+		auto lmb = [&](Fila* row) {return row->getData(Columnas, _etiqueta); }; 
+		ConvertirDatos<Fila*, string>(aux,lmb);
+		InsertionSort<Fila*, string>(NDF,aux, _etiqueta, lmb);
 		return NDF;
 	}
 
