@@ -76,10 +76,11 @@ void Interacción()
 				if (f2 == 1) {
 					cin >> c1;
 					cin >> c2;
-					Listado->Filtrado(Indice, c1, c2, "", ""); break;
+					Listado->Filtrado(Indice, c1, c2, "", "");
 				}
+				break;
 			}
-
+			break;
 			case 6:
 				do{
 				cout << "Elige el Data Frame que quieres ordenar: ";

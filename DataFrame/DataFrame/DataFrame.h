@@ -216,6 +216,7 @@ public:
 				extension = "tsv";
 			}
 		}
+		else extension = "";
 	}
 
 	void ContarColumnas(string n_file)
@@ -290,6 +291,7 @@ public:
 		}
 
 	}
+
 	bool LecturaDatos(string Archivo)
 	{
 		ContarColumnas(Archivo);
@@ -372,35 +374,33 @@ public:
 		nombreArchivo += "." + extension;
 		file.open(nombreArchivo);
 
-		Colmap::iterator k = Columnas.begin();
-
-		for (int j = 0; j < k->second->getDatos()->size(); j++)
+		for (int j = 0; j < contRow; j++)
 		{
 			for (int i = 0; i < contColumnas; i++)
 			{
 				if (extension == "csv") {
 					if (i+1 <= contColumnas)
 					{
-						file << Columnas[etiquetas->at(i)]->getDatos()->at(j); file << ",";
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(Filas->at(j)->getID()); file << ",";
 					}
 					else
 					{
-						file << Columnas[etiquetas->at(i)]->getDatos()->at(j);
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(Filas->at(j)->getID());
 					}
 				}
 				else
 				{
 					if (i + 1 <= contColumnas)
 					{
-						file << Columnas[etiquetas->at(i)]->getDatos()->at(j); file << "\t";
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(Filas->at(j)->getID()); file << "\t";
 					}
 					else
 					{
-						file << Columnas[etiquetas->at(i)]->getDatos()->at(j);
+						file << Columnas[etiquetas->at(i)]->getDatos()->at(Filas->at(j)->getID());
 					}
 				}
 			}
-			if(j + 1 < k->second->getDatos()->size())
+			if(j + 1 < contRow)
 			file << "\n";
 		}
 		file.close();
@@ -418,6 +418,7 @@ public:
 		DataFrame* NDF = new DataFrame();
 		NDF->Columnas = this->Columnas;
 		NDF->setContCols(contColumnas);
+		NDF->setIsEmpty();
 		NDF->IniEtiqueta(etiquetas);
 		for (int i = 0; i < contRow; i++) {
 			if (Columnas[F1]->getDatos()->at(i) == F2) {
@@ -431,36 +432,34 @@ public:
 	template<typename T,typename R = T>
 	void InsertionSort(DataFrame* NDF, string _etiqueta, function<R(T)> key = [](T a) {return a; })
 	{
-		/*if (NDF->Filas->at(1)->getData(Columnas, _etiqueta).at(1) <= 48 && NDF->Filas->at(1)->getData(Columnas, _etiqueta).at(1) <= 57)
-		{
-			for (int i = 1; i < contRow; i++)
+		string tmp; 
+		string tmp1;
+			*NDF->Filas = *Filas;
+			NDF->setContRow(contRow);
+		
+			if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
 			{
-				atoi(NDF->Filas->at(i)->getData(Columnas, _etiqueta).c_str());
+				for (int i = 1; i < contRow; i++)
+				{
+					T aux = NDF->Filas->at(i);
+					int j = i;
+					tmp = key(aux);
+					tmp1 = key(NDF->Filas->at(j - 1));
+					double d = atof(tmp1.c_str());
+					double e = atof(tmp.c_str());
+					while (j > 0 && d >  e)
+					{
+						NDF->Filas->at(j) = NDF->Filas->at(j - 1);
+						j--;
+						tmp1 = key(NDF->Filas->at(j - 1));
+						d = atof(tmp1.c_str());
+					}
+					if (i != j)
+					{
+						NDF->Filas->at(j) = aux;
+					}
+				}
 			}
-		}
-*/
-		for (int i = 0; i < contRow; i++)
-		{
-			NDF->Filas->push_back(new Fila(Filas->at(i)->getID()));
-			NDF->SumarRow();
-		}
-
-		for (int i = 1; i < contRow; i++)
-		{
-
-			Fila* aux = NDF->Filas->at(i);
-			T temp = NDF->Filas->at(i)->getData(Columnas, _etiqueta);
-			int j = i;
-			while (j > 0 && key(NDF->Filas->at(j - 1)->getData(Columnas, _etiqueta)) > key(temp))
-			{
-				NDF->Filas->at(j) = NDF->Filas->at(j - 1);
-				j--;
-			}
-			if (i != j)
-			{
-				NDF->Filas->at(j) = aux;
-			}
-		}
 	}
 
 	DataFrame* Ordenar(string busqueda)
@@ -469,8 +468,9 @@ public:
 		NDF->Columnas = this->Columnas;
 		NDF->setContCols(contColumnas);
 		NDF->IniEtiqueta(etiquetas);
-		auto lmb = [](string c) {return c; };
-		InsertionSort<string, string>(NDF,busqueda,lmb);
+		NDF->setIsEmpty();
+		auto lmb = [&](Fila* row) {return row->getData(Columnas, busqueda); };
+		InsertionSort<Fila*, string>(NDF,busqueda,lmb);
 		return NDF;
 	}
 
@@ -483,16 +483,16 @@ public:
 Colmap getColumnas() {
 	return this->Columnas;
 }
+
 void setContCols(int _cont) { contColumnas = _cont; }
 void setContRow(int _cont) { contRow = _cont; }
 void SumarRow() { contRow++; }
 void SumarCols() { contColumnas++; }
 void IniEtiqueta(vector<string>*_etiquetas) { etiquetas = _etiquetas; }
+void setIsEmpty() { isEmpty = false; }
 };
 
-
 //////////////////////Listado///////////////////////////
-
 
 class ListadoDF {
 	vector<DataFrame*>* Listado;
@@ -556,5 +556,3 @@ public:
 		Listado->push_back(Listado->at(n)->Ordenar(B));
 	}
 };
-
-
