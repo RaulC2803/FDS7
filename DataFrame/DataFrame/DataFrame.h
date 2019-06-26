@@ -417,13 +417,25 @@ public:
 	bool Comparar(int a, string c1, string c2, int i) {
 		switch (a) {
 		case 1:
-
+			if (Columnas[c1]->getDatos()->at(i) >= c2)
+				return true;
+			else return false;
 			break;
 		case 2:
+			if (Columnas[c1]->getDatos()->at(i) <= c2)
+				return true;
+			else return false;
 			break;
 		case 3:
+				if (Columnas[c1]->getDatos()->at(i).at(0) == c2.at(0))
+					return true;
+			
+			else return false;
 			break;
 		case 4:
+			if (Columnas[c1]->getDatos()->at(i).at(Columnas[c1]->getDatos()->at(i).size()-1) == c2.at(0))
+				return true;
+			else return false;
 			break;
 		case 5:
 			if (Columnas[c1]->getDatos()->at(i) == c2) 
@@ -431,11 +443,14 @@ public:
 			else return false;
 			break;
 		case 6:
-			if (Columnas[c1]->getDatos()->at(i).compare(c2) == 0)
+			if (Columnas[c1]->getDatos()->at(i).find(c2) != std::string::npos)
 				return true;
 			else return false;
 			break;
 		case 7:
+			if (Columnas[c1]->getDatos()->at(i).find(c2) == std::string::npos)
+				return true;
+			else return false;
 			break;
 		default:
 		
