@@ -413,16 +413,51 @@ public:
 		}
 	}*/
 
-	DataFrame* FiltrarIguala(string F1, string F2) {
+	bool Comparar(int a, string c1, string c2, int i) {
+		switch (a) {
+		case 1:
+
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			if (Columnas[c1]->getDatos()->at(i) == c2) 
+				return true;
+			else return false;
+			break;
+		case 6:
+			if (Columnas[c1]->getDatos()->at(i).compare(c2) == 0)
+				return true;
+			else return false;
+			break;
+		case 7:
+			break;
+		default:
+		
+			break;
+		}
+	}
+
+	DataFrame* Filtrar(int a, string F1, string F2, int b,string F3, string F4) {
 		DataFrame* NDF = new DataFrame();
 		NDF->Columnas = this->Columnas;
 		NDF->setContCols(contColumnas);
-		NDF->setIsEmpty();
 		NDF->IniEtiqueta(etiquetas);
 		for (int i = 0; i < contRow; i++) {
-			if (Columnas[F1]->getDatos()->at(i) == F2) {
-				NDF->Filas->push_back(new Fila(i));
-				NDF->SumarRow();
+			
+			if (Comparar(a,F1,F2,i)) {
+				if (F3 == "" && F4 == "") {
+					NDF->Filas->push_back(new Fila(i));
+					NDF->SumarRow();
+				}
+				else if (Comparar(b,F3,F4,i) ){
+					NDF->Filas->push_back(new Fila(i));
+					NDF->SumarRow();
+				}
 			}
 		}
 		return NDF;
@@ -539,8 +574,8 @@ public:
 		return Listado->size();
 	}
 
-	void Filtrado(int i,string c1, string c2, string c3, string c4) {
-		Listado->push_back(Listado->at(i)->FiltrarIguala(c1, c2));
+	void Filtrado(int i, int a, string c1, string c2, int b, string c3, string c4) {
+		Listado->push_back(Listado->at(i)->Filtrar(a, c1, c2, b, c3, c4));
 	}
 
 	vector<DataFrame*>* getDFS() {
