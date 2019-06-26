@@ -2,10 +2,6 @@
 #include "Menu.h"
 #include <map>
 
-void Filtrado(int i, int Validar, string &c1,string &c2,string &c3, string &c4) {
-		
-}
-
 void Interacción()
 {
 	ListadoDF* Listado = new ListadoDF;
@@ -98,22 +94,18 @@ void Interacción()
 			} while (!(Filtro >= 1 && Filtro <= 7) || !(Filtro2 >= 0 && Filtro2 <= 7) || (f2 == 2 && Validar <2) );
 			Listado->Filtrado(Indice, Filtro, c1, c2, Filtro2, c3, c4);
 			break;
-		case 6:
+		case 5:
 			do {
 				cout << "Elige el Data Frame que quieres ordenar: ";
 				cin >> Indice;
-
 				cout << "Elige la etiqueta por la que quieres ordenar: ";
-
 				cin >> Busqueda;
-			} while (!(Indice >= 0 && Indice < Listado->getsize()));
+			} while (!(Indice >= 0 &&Indice < Listado->getsize()));
 			Listado->OrdenarXAtributo(Busqueda, Indice);
 			break;
 		default:
 			break;
 			}
-			
-			
 			
 		if (Opcion == 27) break;
 		
@@ -123,11 +115,8 @@ void Interacción()
 	}
 }
 
-
-
 int main()
 {  
-
 	Interacción();
 	return 0;
 }
