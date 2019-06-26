@@ -7,7 +7,6 @@
 #include <algorithm>
 #include "Menu.h"
 
-
 using namespace std;
 using namespace System;
 
@@ -434,25 +433,18 @@ public:
 	{
 		string tmp; 
 		string tmp1;
-			*NDF->Filas = *Filas;
-			NDF->setContRow(contRow);
-		
+			
 			if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
 			{
-				for (int i = 1; i < contRow; i++)
+				for (int i = 2; i < contRow; i++)
 				{
 					T aux = NDF->Filas->at(i);
 					int j = i;
 					tmp = key(aux);
-					tmp1 = key(NDF->Filas->at(j - 1));
-					double d = atof(tmp1.c_str());
-					double e = atof(tmp.c_str());
-					while (j > 0 && d >  e)
+					while (j > 1 && atof(key(NDF->Filas->at(j - 1)).c_str()) > atof(tmp.c_str()))
 					{
 						NDF->Filas->at(j) = NDF->Filas->at(j - 1);
 						j--;
-						tmp1 = key(NDF->Filas->at(j - 1));
-						d = atof(tmp1.c_str());
 					}
 					if (i != j)
 					{
@@ -460,6 +452,7 @@ public:
 					}
 				}
 			}
+
 	}
 
 	DataFrame* Ordenar(string busqueda)
@@ -468,6 +461,8 @@ public:
 		NDF->Columnas = this->Columnas;
 		NDF->setContCols(contColumnas);
 		NDF->IniEtiqueta(etiquetas);
+		*NDF->Filas = *Filas;
+		NDF->setContRow(contRow);
 		NDF->setIsEmpty();
 		auto lmb = [&](Fila* row) {return row->getData(Columnas, busqueda); };
 		InsertionSort<Fila*, string>(NDF,busqueda,lmb);
