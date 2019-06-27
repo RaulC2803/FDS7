@@ -160,6 +160,10 @@ public:
 	vector<string>* getDatos() {
 		return Data;
 	}
+
+	void setDatos(vector<string>* ptr) {
+		Data = ptr;
+	}
 };
 
 typedef map<string, Columna*> Colmap;
@@ -467,6 +471,26 @@ public:
 				}
 			}
 		}
+		return NDF;
+	}
+
+	DataFrame* Select(vector<string> Nombres) {
+		int x = 0;
+		Colmap Ncol;
+		for (int i = 0; i < Nombres.size(); i++) {
+			Ncol.insert({ Nombres.at(i), new Columna(Nombres.at(i)) });
+			x++;
+		}
+		for (int i = 0; i < Nombres.size(); i++) {
+			Ncol[Nombres.at(i)]->setDatos(Columnas[Nombres.at(i)]->getDatos());
+		}
+		DataFrame* NDF = new DataFrame;
+		NDF->Columnas = Ncol;
+		*NDF->Filas = *Filas;
+		NDF->contRow = contRow;
+		NDF->contColumnas = x;
+		*NDF->etiquetas = Nombres;
+		NDF->setIsEmpty();
 		return NDF;
 	}
 
