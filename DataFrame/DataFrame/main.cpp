@@ -8,6 +8,7 @@ void Interacción()
 	int Opcion = 0;
 	int Opcion2, Indice, Filtro, Filtro2 = 0, f2;
 	int Validar = 0;
+	int xd;
 	string Busqueda;
 	Menu(Opcion);
 	string c1, c2, c3 = "", c4 = "";
@@ -105,6 +106,7 @@ void Interacción()
 		       
 			} while (!(Filtro >= 1 && Filtro <= 7) || !(Filtro2 >= 0 && Filtro2 <= 7) || (f2 == 2 && Validar <2) );
 			Listado->Filtrado(Indice, Filtro, c1, c2, Filtro2, c3, c4);
+			Filtro = 0; Filtro2 = 0; c1 = ""; c2 = ""; c3 = ""; c4 = "";
 			break;
 		case 5:
 			do {
@@ -112,8 +114,10 @@ void Interacción()
 				cin >> Indice;
 				cout << "Elige la etiqueta por la que quieres ordenar: ";
 				cin >> Busqueda;
-			} while (!(Indice >= 0 &&Indice < Listado->getsize()));
-			Listado->OrdenarXAtributo(Busqueda, Indice);
+				cout << "Mayor a menor (0) Menor a Mayor (1)";
+				cin >> xd;
+			} while (!(Indice >= 0 &&Indice < Listado->getsize()) || !(xd >= 0 && xd <=1));
+			Listado->OrdenarXAtributo(Busqueda, Indice,xd);
 			break;
 		
 		case 6:
