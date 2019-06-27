@@ -106,6 +106,7 @@ void Menu(int &Opcion) {
 		cout << "\t\t\t\t      " << char(186) << "    4. Filtrar DataFrame\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    5. Ordenar DataFrame\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    6. Seleccion Columna\t\t    " << char(186) << endl;
+		cout << "\t\t\t\t      " << char(186) << "    7. Indexar   Columna\t\t    " << char(186) << endl;
 		cout << "\t\t\t\t      " << char(186) << "    27. Salir           \t\t    " << char(186) << endl;
 		
 		//(OPCIONAL)Crear DF(Crear un nuevo data frame con lo indicado, desde otro data frame 

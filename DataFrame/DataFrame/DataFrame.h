@@ -57,7 +57,7 @@ class Tree
 		Node* right;
 		int h;
 
-		Node(T elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
+		Node(T elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(rigth) {}
 
 		static int height(Node* n)
 		{
@@ -100,11 +100,11 @@ class Tree
 	void rotBA(Node*& node)
 	{
 		Node* aux = node->right;
-		n->right = aux->left;
+		node->right = aux->left;
 		node->updateH();
 		aux->left = node;
 		node = aux;
-		node->updateH;
+		node->updateH();
 	}
 
 	void balance(Node*& n)
@@ -129,6 +129,7 @@ class Tree
 		if (node == nullptr)
 		{
 			node = new Node(elem);
+			return;
 		}
 		else {
 			if (key(elem) < key(node->elem)) {
@@ -138,6 +139,7 @@ class Tree
 				add(node->right, elem);
 			}
 		}
+		balance(node);
 		node->updateH();
 	}
 
@@ -161,6 +163,18 @@ class Tree
 		}
 		return nullptr;
 	}
+
+	Node* search(Node*& n, T elem) {
+		if (n == nullptr || key(elem) = key(n->elem)) {
+			return n;
+		}
+		else if (key(elem) < key(n->elem))
+		{
+			return search(n->left, elem);
+		else return search(n->right, elem);
+		}
+	}
+
 public:
 
 	Tree(std::function<R(T)> key = [](T a) {return a; }) :root(nullptr), length(0), key(key) {}
@@ -185,6 +199,11 @@ public:
 		if (node != nullptr) {
 			return node->elem;
 		}
+	}
+
+	void search(T elem)
+	{
+		this->search(root, elem);
 	}
 };
 
@@ -420,7 +439,8 @@ public:
 	}
 
 	void Index(string _etiqueta) {
-		T = new Tree<Fila*, string>([&](Fila* R) {return R->getData(Columnas, _etiqueta); });
+		auto lmb = [&](Fila* row) {return row->getData(Columnas, _etiqueta); };
+		T = new Tree<Fila*, string>(lmb);
 		for (int i = 1; i < Filas->size();i++) {
 			T->add(Filas->at(i));
 		}
@@ -678,7 +698,6 @@ void IniEtiqueta(vector<string>*_etiquetas) { etiquetas = _etiquetas; }
 void setIsEmpty() { isEmpty = false; }
 int getContCols() { return contColumnas; }
 };
-
 
 //////////////////////Listado///////////////////////////
 
