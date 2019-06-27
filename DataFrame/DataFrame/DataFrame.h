@@ -279,11 +279,11 @@ public:
 		{
 			if (j < 9 || j >= contRow - 9)
 			{
-				cout << Filas->at(j)->getID() << "\t";
+				cout << Filas->at(j)->getID() << "\t\t\t";
 
 				for (int i = 0; i < 3; i++)
 				{
-					cout << Filas->at(j)->getData(Columnas,etiquetas->at(i)) << "\t\t";
+					cout << Filas->at(j)->getData(Columnas,etiquetas->at(i)) << "\t\t\t";
 				}
 				cout << endl;
 			}
@@ -357,20 +357,12 @@ public:
 		return true;
 	}
 
-	void GuardarDatos()
+	void GuardarDatos(string fileName, string extension)
 	{
-		string nombreArchivo = "";
-		string extension = "";
+		string nombreArchivo = fileName;
 		ofstream file;
-
-		cout << "Nombre para Guardar: "; cin >> nombreArchivo;
-		do
-		{
-			cout << "Cual extension usara? csv o tsv: "; cin >> extension;
-
-		} while (extension != "csv" && extension != "tsv");
-
 		nombreArchivo += "." + extension;
+
 		file.open(nombreArchivo);
 
 		for (int j = 0; j < contRow; j++)
@@ -463,8 +455,9 @@ public:
 		return NDF;
 	}
 
+	//********************************************Ordenamiento**************************************
 	template<typename T,typename R = T>
-	void InsertionSort(DataFrame* NDF, vector<double>* aux, string _etiqueta, function<R(T)> key = [](T a) {return a; })
+	void InsertionSort(DataFrame* NDF, vector<double>* aux, function<R(T)> key = [](T a) {return a; })
 	{		
 		if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
 		{
@@ -507,6 +500,75 @@ public:
 		}
 	}
 
+	template <typename T, typename R = T>
+	int Pivot(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
+		if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
+		{
+			double e = aux->at(i);
+			T piv = NDF->Filas->at(i);
+			int izq = i + 1;
+			int der = f;
+			while (der >= izq) {
+				if (aux->at(izq) <= e) izq++;
+				else if (aux->at(der) >= e) der--;
+				else {
+					T t = NDF->Filas->at(der);
+					double y = aux->at(der);
+					NDF->Filas->at(der) = NDF->Filas->at(izq);
+					aux->at(der) = aux->at(izq);
+					NDF->Filas->at(izq) = t;
+					aux->at(izq) = y;
+					der--;
+					izq++;
+				}
+			}
+			if (der != i) {
+				double y = aux->at(der);
+				T t = NDF->Filas->at(der);
+				aux->at(der) = aux->at(i);
+				NDF->Filas->at(der) = NDF->Filas->at(i);
+				aux->at(i) = y;
+				NDF->Filas->at(i) = t;
+			}
+			return der;
+		}
+		else
+		{
+			T piv = NDF->Filas->at(i);
+			int izq = i + 1;
+			int der = f;
+			while (der >= izq) {
+				if (key(NDF->Filas->at(izq)) <= key(piv)) izq++;
+				else if (key(NDF->Filas->at(der)) >= key(piv)) der--;
+				else {
+					T t = NDF->Filas->at(der);
+					NDF->Filas->at(der--) = NDF->Filas->at(izq);
+					NDF->Filas->at(izq++) = t;
+				}
+			}
+			if (der != i) {
+				T t = NDF->Filas->at(der);
+				NDF->Filas->at(der) = NDF->Filas->at(i);
+				NDF->Filas->at(i) = t;
+			}
+			return der;
+		}
+	}
+
+	template <typename T, typename R = T>
+	void Quick(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
+		if (i < f) {
+			int p = Pivot(NDF, aux, i, f, key);
+			Quick(NDF, aux, i, p - 1, key);
+			Quick(NDF, aux, p + 1, f, key);
+		}
+	}
+
+	template <typename T, typename R = T>
+	void QuickSort(DataFrame* NDF, vector<double>* aux, function<R(T)> key = [](T a) {return a; }) {
+		Quick(NDF, aux,  1, contRow - 1, key);
+	}
+
 	template<typename T, typename R=T>
 	void ConvertirDatos(vector<double>* aux, function<R(T)> key = [](T a) {return a; })
 	{
@@ -536,10 +598,12 @@ public:
 
 		auto lmb = [&](Fila* row) {return row->getData(Columnas, _etiqueta); }; 
 		ConvertirDatos<Fila*, string>(aux,lmb);
-		InsertionSort<Fila*, string>(NDF,aux, _etiqueta, lmb);
+		//InsertionSort<Fila*, string>(NDF,aux,lmb);
+		QuickSort<Fila*, string>(NDF, aux, lmb);
 		return NDF;
 	}
 
+	//*************************************************************************************************
 	bool getIsEmpty() { return isEmpty; }
 
 	vector<Fila*>* getFila() {
@@ -599,9 +663,9 @@ public:
 		cout << endl;
 	}
 
-	void Guardar(int i)
+	void Guardar(int i, string fileName, string extension)
 	{
-		Listado->at(i)->GuardarDatos();
+		Listado->at(i)->GuardarDatos(fileName, extension);
 	}
 
 	bool getIsEmpty(int i) { return Listado->at(i)->getIsEmpty(); }

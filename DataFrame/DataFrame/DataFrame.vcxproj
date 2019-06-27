@@ -126,7 +126,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BusquedayOrdenamiento.hpp" />
     <ClInclude Include="DataFrame.h" />
     <ClInclude Include="Menu.h" />
   </ItemGroup>

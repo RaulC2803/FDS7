@@ -22,8 +22,9 @@ void Interacción()
 				do {
 					cout << "Ingresa el archivo que quiere abrir: "; cin >> nombreArchivo;
 				} while (!Listado->GenerarDF(nombreArchivo));
-
+				configurarColorTexto(Azul);
 				cout << "DATAFRAME CREADO EXITOSAMENTE" << endl;
+				configurarColorTexto(Verde);
 				cout << "Desea crear un nuevo DataFrame?(Si:1/No:0): "; cin >> Opcion2;
 				if (Opcion2 == 0)
 				{
@@ -44,9 +45,19 @@ void Interacción()
 			} while (i >= Listado->getsize());
 
 			if (!Listado->getIsEmpty(i)) {
+				string fileName;
+				string extension;
+				cout << "Nombre para Guardar: "; cin >> fileName;
+				do
+				{
+					cout << "Cual extension usara? csv o tsv: "; cin >> extension;
 
-				Listado->Guardar(i);
+				} while (extension != "csv" && extension != "tsv");
+
+				Listado->Guardar(i, fileName, extension);
+				configurarColorTexto(Azul);
 				cout << "DATAFRAME GUARDADO EXITOSAMENTE";
+				configurarColorTexto(Verde);
 				system("pause>0");
 
 			}
