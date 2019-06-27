@@ -53,11 +53,11 @@ class Tree
 	struct Node
 	{
 		T elem;
-		Node* left;
-		Node* right;
+		Node* l;
+		Node* r;
 		int h;
 
-		Node(T elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(rigth) {}
+		Node(T elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), l(left), r(rigth) {}
 
 		static int height(Node* n)
 		{
@@ -71,55 +71,56 @@ class Tree
 			}
 		}
 		void updateH() {
-			h = std::max(Node::height(left), Node::height(right)) + 1;
+			h = std::max(Node::height(l), Node::height(r)) + 1;
 		}
 	};
 	Node* root;
 	int length;
 	std::function<R(T)> key;
+	string etiqueta;
 
 	void borrar(Node* node)
 	{
 		if (node != nullptr) {
-			borrar(node->left);
-			borrar(node->right);
+			borrar(node->l);
+			borrar(node->r);
 			delete node;
 		}
 	}
 
 	void rotAB(Node*& node)
 	{
-		Node* aux = node->left;
-		node->left = aux->right;
+		Node* aux = node->l;
+		node->l = aux->r;
 		node->updateH();
-		aux->right = node;
+		aux->r = node;
 		node = aux;
 		node->updateH();
 	}
 
 	void rotBA(Node*& node)
 	{
-		Node* aux = node->right;
-		node->right = aux->left;
+		Node* aux = node->r;
+		node->r = aux->l;
 		node->updateH();
-		aux->left = node;
+		aux->l = node;
 		node = aux;
 		node->updateH();
 	}
 
 	void balance(Node*& n)
 	{
-		int delta = Node::height(n->left) - Node::height(n->right);
+		int delta = Node::height(n->l) - Node::height(n->r);
 		if (delta < -1) {
-			if (Node::height(n->right->left) > Node::height(n->right->right)) {
-				rotAB(n->right);
+			if (Node::height(n->r->l) > Node::height(n->r->r)) {
+				rotAB(n->r);
 			}
 			rotBA(n);
 		}
 		else if (delta > 1) {
-			if (Node::height(n->left->right) > Node::height(n->left->left))
+			if (Node::height(n->l->r) > Node::height(n->l->l))
 			{
-				rotBA(n->left);
+				rotBA(n->l);
 			}
 			rotAB(n);
 		}
@@ -133,10 +134,10 @@ class Tree
 		}
 		else {
 			if (key(elem) < key(node->elem)) {
-				add(node->left, elem);
+				add(node->l, elem);
 			}
 			else {
-				add(node->right, elem);
+				add(node->r, elem);
 			}
 		}
 		balance(node);
@@ -146,38 +147,39 @@ class Tree
 	void InOrder(Node* node, std::function<void(T)> doSomething) {
 		if (node != nullptr)
 		{
-			InOrder(node->left, doSomething);
+			InOrder(node->l, doSomething);
 			doSomething(node->elem);
-			InOrder(node->right, doSomething);
+			InOrder(node->r, doSomething);
 		}
 	}
 
 	Node* Mayor(Node* node) {
 		if (node != nullptr) {
-			if (node->right == nullptr) {
+			if (node->r== nullptr) {
 				return node;
 			}
 			else {
-				return node->right;
+				return node->r;
 			}
 		}
 		return nullptr;
 	}
 
-	Node* search(Node*& n, T elem) {
-		if (n == nullptr || key(elem) = key(n->elem)) {
+	Node* bus(Node*& n, string _elem) {	
+
+		if (n == nullptr || _elem == key(n->elem) ) {
 			return n;
 		}
-		else if (key(elem) < key(n->elem))
+		else if (_elem < key(n->elem))
 		{
-			return search(n->left, elem);
-		else return search(n->right, elem);
+			return bus(n->l, _elem);
 		}
+		else return bus(n->r, _elem);
 	}
 
 public:
 
-	Tree(std::function<R(T)> key = [](T a) {return a; }) :root(nullptr), length(0), key(key) {}
+	Tree(string etiqueta, std::function<R(T)> key = [](T a) {return a; }) :root(nullptr), length(0), key(key), etiqueta(etiqueta) {}
 	~Tree() { borrar(root); }
 
 	int Height() {
@@ -201,10 +203,16 @@ public:
 		}
 	}
 
-	void search(T elem)
+	T search(string elem)
 	{
-		this->search(root, elem);
+		if (this->bus(root, elem) != nullptr)return this->bus(root, elem)->elem;
+		else
+		{
+			return nullptr;
+		}
 	}
+
+	string getEtiqueta() { return this->etiqueta; }
 };
 
 class DataFrame
@@ -217,13 +225,14 @@ class DataFrame
 	int contColumnas;
 	int contRow;
 	bool isEmpty;
-	Tree<Fila*, string>* T;
+	vector<Tree<Fila*, string>*>* T;
 public:
 	
 	DataFrame() {
 		isEmpty = true;
 		Filas = new vector<Fila*>;
 		etiquetas = new vector<string>;
+		T = new vector<Tree<Fila*, string>*>;
 		contColumnas = 0;
 		contRow = 0;
 		extension = "";
@@ -438,12 +447,26 @@ public:
 		file.close();
 	}
 
-	void Index(string _etiqueta) {
+	int Index(string _elem, string _etiqueta) {
 		auto lmb = [&](Fila* row) {return row->getData(Columnas, _etiqueta); };
-		T = new Tree<Fila*, string>(lmb);
-		for (int i = 1; i < Filas->size();i++) {
-			T->add(Filas->at(i));
+		for (int i = 0; i < T->size(); i++)
+		{
+			if (T->at(i)->getEtiqueta() == _etiqueta)
+			{
+				return buscar(i, _elem);
+			}
 		}
+		T->push_back(new Tree<Fila*, string>(_etiqueta, lmb));
+		for (int i = 1; i < Filas->size();i++) {
+			T->at(T->size()-1)->add(Filas->at(i));
+		}
+		return buscar(T->size()-1, _elem);
+	}
+
+	int buscar(int i, string _elem)
+	{
+		if(T->at(i)->search(_elem) != nullptr)return T->at(i)->search(_elem)->getID();
+		else return -1;
 	}
 
 	bool Comparar(int a, string c1, string c2, int i) {
@@ -495,6 +518,7 @@ public:
 		NDF->Columnas = this->Columnas;
 		NDF->setContCols(contColumnas);
 		NDF->IniEtiqueta(etiquetas);
+		NDF->setIsEmpty();
 		for (int i = 0; i < contRow; i++) {
 			
 			if (Comparar(a,F1,F2,i)) {
@@ -827,9 +851,9 @@ public:
 		Listado->push_back(Listado->at(i)->Filtrar(a, c1, c2, b, c3, c4));
 	}
 
-	void Index(int i, string _etiqueta)
+	int Index(int indice, string searchElem, string _etiqueta)
 	{
-		Listado->at(i)->Index(_etiqueta);
+		return Listado->at(indice)->Index(searchElem,_etiqueta);
 	}
 
 	vector<DataFrame*>* getDFS() {
@@ -843,5 +867,10 @@ public:
 	void Seleccionar(int i, vector<string> N)
 	{
 		Listado->push_back(Listado->at(i)->Select(N));
+	}
+
+	void Buscar(int i, int index, string _search)
+	{
+		Listado->at(i)->buscar(index, _search);
 	}
 };

@@ -6,13 +6,14 @@ void Interacción()
 {
 	ListadoDF* Listado = new ListadoDF;
 	int Opcion = 0;
-	int Opcion2, Indice, Filtro, Filtro2 = 0, f2;
+	int Opcion2 = 0, Indice = 0, Filtro = 0, Filtro2 = 0, f2 = 0;
 	int Validar = 0;
-	int xd;
-	string Busqueda;
+	int xd = 0;
+	int find = 0;
+	string Busqueda = "";
 	Menu(Opcion);
-	string c1, c2, c3 = "", c4 = "";
-	string nombreArchivo;
+	string c1 = "", c2 = "", c3 = "", c4 = "";
+	string nombreArchivo = "";
 	vector<string>ColNombres;
 
 	while (true)
@@ -33,6 +34,7 @@ void Interacción()
 					break;
 				}
 			}
+			nombreArchivo = ""; Opcion2 = 0;
 			break;
 
 		case 2:
@@ -64,6 +66,7 @@ void Interacción()
 
 			}
 			else { cout << "No ha igresado datos al DataFrame"; }
+			
 			break;
 		case 4:
 			do {
@@ -106,7 +109,7 @@ void Interacción()
 		       
 			} while (!(Filtro >= 1 && Filtro <= 7) || !(Filtro2 >= 0 && Filtro2 <= 7) || (f2 == 2 && Validar <2) );
 			Listado->Filtrado(Indice, Filtro, c1, c2, Filtro2, c3, c4);
-			Filtro = 0; Filtro2 = 0; c1 = ""; c2 = ""; c3 = ""; c4 = "";
+			Filtro = 0; Filtro2 = 0; c1 = ""; c2 = ""; c3 = ""; c4 = ""; Validar = 0;
 			break;
 		case 5:
 			do {
@@ -114,10 +117,10 @@ void Interacción()
 				cin >> Indice;
 				cout << "Elige la etiqueta por la que quieres ordenar: ";
 				cin >> Busqueda;
-				cout << "Mayor a menor (0) Menor a Mayor (1)";
-				cin >> xd;
+				cout << "Mayor a menor (1) Menor a Mayor (0): "; cin >> xd;
 			} while (!(Indice >= 0 &&Indice < Listado->getsize()) || !(xd >= 0 && xd <=1));
-			Listado->OrdenarXAtributo(Busqueda, Indice,xd);
+			Listado->OrdenarXAtributo(Busqueda, Indice, xd);
+			xd = 0; Busqueda = ""; Indice = 0;
 			break;
 		
 		case 6:
@@ -126,23 +129,34 @@ void Interacción()
 			do {
 				cout << "Ingresa el Data Frame: "; cin >> Indice;
 			} while (!(Indice >= 0 && Indice < Listado->getsize()));
+
 			do {
 				cout << "Elige el número de columnas que quieres mostrar: ";
 				cin >> Ncolumnas;
-			} while (!(Ncolumnas > 0 && Ncolumnas <= Listado->getDFS()->at(Indice)->getContCols()));
+			} while (!(Ncolumnas > 0 && Ncolumnas <= Listado->getDFS()->at(Indice)->getContCols()))
+				;
 			for (int i = 0; i < Ncolumnas; i++) {
+				cout << "Seleccione una columna: ";
 				cin >> c1;
 				ColNombres.push_back(c1);
 			}
 			Listado->Seleccionar(Indice, ColNombres);
+			Indice = 0; Ncolumnas = 0; c1 = "";
 			break;
 
 		case 7: 
 			do {
 				cout << "Ingrese el Data Frame: ";cin >> Indice;
 			} while ((!(Indice >= 0) && Indice < Listado->getsize()));
-			cout << "Ingrese la Columna en la que quiere buscar: "; cin >> Busqueda;
-			Listado->Index(Indice, Busqueda);
+			cout << "Ingrese la Columna en la que quiere buscar: "; cin >> c4;
+			cout << "Ingrese el elemento que quiere buscar: "; cin >> Busqueda;
+			find = Listado->Index(Indice, Busqueda, c4);
+			if ( find != -1)
+			{
+				cout << "El elemento se encuentra en la Fila " << find;
+			}
+			else { configurarColorTexto(Rojo); cout << "NO MATCH"; configurarColorTexto(Verde); }
+			system("pause>0");
 			break;
 		default:
 			break;
