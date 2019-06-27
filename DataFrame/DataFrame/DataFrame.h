@@ -557,7 +557,7 @@ public:
 	}
 
 	template <typename T, typename R = T>
-	int Pivot(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
+	int PivotM1(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
 		if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
 		{
 			double e = aux->at(i);
@@ -612,17 +612,86 @@ public:
 	}
 
 	template <typename T, typename R = T>
-	void Quick(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
-		if (i < f) {
-			int p = Pivot(NDF, aux, i, f, key);
-			Quick(NDF, aux, i, p - 1, key);
-			Quick(NDF, aux, p + 1, f, key);
+	int PivotM2(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
+		if (key(NDF->Filas->at(1)).at(0) >= 48 && (key(NDF->Filas->at(1)).at(0)) <= 57)
+		{
+			double e = aux->at(i);
+			T piv = NDF->Filas->at(i);
+			int izq = i + 1;
+			int der = f;
+			while (der >= izq) {
+				if (aux->at(izq) <= e) izq++;
+				else if (aux->at(der) >= e) der--;
+				else {
+					T t = NDF->Filas->at(der);
+					double y = aux->at(der);
+					NDF->Filas->at(der) = NDF->Filas->at(izq);
+					aux->at(der) = aux->at(izq);
+					NDF->Filas->at(izq) = t;
+					aux->at(izq) = y;
+					der--;
+					izq++;
+				}
+			}
+			if (der != i) {
+				double y = aux->at(der);
+				T t = NDF->Filas->at(der);
+				aux->at(der) = aux->at(i);
+				NDF->Filas->at(der) = NDF->Filas->at(i);
+				aux->at(i) = y;
+				NDF->Filas->at(i) = t;
+			}
+			return der;
+		}
+		else
+		{
+			T piv = NDF->Filas->at(i);
+			int izq = i + 1;
+			int der = f;
+			while (der >= izq) {
+				if (key(NDF->Filas->at(izq)) >= key(piv)) izq++;
+				else if (key(NDF->Filas->at(der)) <= key(piv)) der--;
+				else {
+					T t = NDF->Filas->at(der);
+					NDF->Filas->at(der--) = NDF->Filas->at(izq);
+					NDF->Filas->at(izq++) = t;
+				}
+			}
+			if (der != i) {
+				T t = NDF->Filas->at(der);
+				NDF->Filas->at(der) = NDF->Filas->at(i);
+				NDF->Filas->at(i) = t;
+			}
+			return der;
 		}
 	}
 
 	template <typename T, typename R = T>
-	void QuickSort(DataFrame* NDF, vector<double>* aux, function<R(T)> key = [](T a) {return a; }) {
-		Quick(NDF, aux,  1, contRow - 1, key);
+	void QuickM1(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
+		if (i < f) {
+			int p = PivotM1(NDF, aux, i, f, key);
+			QuickM1(NDF, aux, i, p - 1, key);
+			QuickM1(NDF, aux, p + 1, f, key);
+		}
+	}
+
+	template <typename T, typename R = T>
+	void QuickM2(DataFrame* NDF, vector<double>* aux, int i, int f, function<R(T)> key = [](T a) {return a; }) {
+		if (i < f) {
+			int p = PivotM2(NDF, aux, i, f, key);
+			QuickM2(NDF, aux, i, p - 1, key);
+			QuickM2(NDF, aux, p + 1, f, key);
+		}
+	}
+
+	template <typename T, typename R = T>
+	void QuickSort1(DataFrame* NDF, vector<double>* aux, function<R(T)> key = [](T a) {return a; }) {
+		QuickM1(NDF, aux,  1, contRow - 1, key);
+	}
+
+	template <typename T, typename R = T>
+	void QuickSort2(DataFrame* NDF, vector<double>* aux, function<R(T)> key = [](T a) {return a; }) {
+		QuickM2(NDF, aux, 1, contRow - 1, key);
 	}
 
 	template<typename T, typename R=T>
@@ -639,7 +708,7 @@ public:
 		}
 	}
 
-	DataFrame* Ordenar(string _etiqueta)
+	DataFrame* Ordenar(string _etiqueta, int x)
 	{
 		vector<double>* aux;
 		aux = new vector<double>;
@@ -655,7 +724,10 @@ public:
 		auto lmb = [&](Fila* row) {return row->getData(Columnas, _etiqueta); }; 
 		ConvertirDatos<Fila*, string>(aux,lmb);
 		//InsertionSort<Fila*, string>(NDF,aux,lmb);
-		QuickSort<Fila*, string>(NDF, aux, lmb);
+		if(x == 0)
+		QuickSort1<Fila*, string>(NDF, aux, lmb);
+		if(x == 1)
+			QuickSort2<Fila*, string>(NDF, aux, lmb);
 		return NDF;
 	}
 
@@ -745,8 +817,8 @@ public:
 		return this->Listado;
 	}
 
-	void OrdenarXAtributo(string B, int n) {
-		Listado->push_back(Listado->at(n)->Ordenar(B));
+	void OrdenarXAtributo(string B, int n, int x) {
+		Listado->push_back(Listado->at(n)->Ordenar(B, x));
 	}
 
 	void Seleccionar(int i, vector<string> N)
