@@ -10,27 +10,70 @@
 using namespace std;
 using namespace System;
 
+class Columna {
+	vector<string>* Data;
+	string Etiqueta;
+public:
+	Columna(string Etiqueta) {
+		this->Etiqueta = Etiqueta;
+		Data = new vector<string>;
+	}
+	string getEtiqueta() { return Etiqueta; }
+
+	void AgregarDatos(string Dato) {
+		Data->push_back(Dato);
+	}
+
+	vector<string>* getDatos() {
+		return Data;
+	}
+
+	void setDatos(vector<string>* ptr) {
+		Data = ptr;
+	}
+};
+
+typedef map<string, Columna*> Colmap;
+
+class Fila
+{
+	int id;
+
+public:
+	Fila(int id): id(id) {}
+	string getData(Colmap &Col, string name) {
+		return Col[name]->getDatos()->at(id);
+	}
+	int getID() { return id; }
+};
+
 template <typename T, typename R = T>
 class Tree
 {
 	struct Node
 	{
-		float elem;
+		T elem;
 		Node* left;
 		Node* right;
 		int h;
 
-		Node(float elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
+		Node(T elem, Node* left = nullptr, Node* rigth = nullptr) :elem(elem), left(left), right(right) {}
 
 		static int height(Node* n)
 		{
-			return n == nullptr ? -1 : n->h;
+			if (n == nullptr)
+			{
+				return -1;
+			}
+			else
+			{
+				n->h;
+			}
 		}
 		void updateH() {
 			h = std::max(Node::height(left), Node::height(right)) + 1;
 		}
 	};
-
 	Node* root;
 	int length;
 	std::function<R(T)> key;
@@ -87,16 +130,18 @@ class Tree
 		{
 			node = new Node(elem);
 		}
-		else if (key(elem) < key(node->elem)) {
-			add(node->left, elem);
-		}
 		else {
-			add(node->right, elem);
+			if (key(elem) < key(node->elem)) {
+				add(node->left, elem);
+			}
+			else {
+				add(node->right, elem);
+			}
 		}
 		node->updateH();
 	}
 
-	void InOrder(Node* node, std::function<void(float)> doSomething) {
+	void InOrder(Node* node, std::function<void(T)> doSomething) {
 		if (node != nullptr)
 		{
 			InOrder(node->left, doSomething);
@@ -118,7 +163,7 @@ class Tree
 	}
 public:
 
-	Tree(std::function<R(T)>key = [](T a) {return a; }) :root(nullptr), length(0), key(key) {}
+	Tree(std::function<R(T)> key = [](T a) {return a; }) :root(nullptr), length(0), key(key) {}
 	~Tree() { borrar(root); }
 
 	int Height() {
@@ -130,54 +175,17 @@ public:
 
 	void add(T elem) { add(root, elem); length++; }
 
-	void InOrder(std::function<void(float)>doSomething)
+	void InOrder(std::function<void(T)>doSomething)
 	{
 		InOrder(root, doSomething);
 	}
 
-	float Mayor() {
+	string Mayor() {
 		Node* node = Mayor(root);
 		if (node != nullptr) {
 			return node->elem;
 		}
 	}
-};
-
-class Columna {
-	vector<string>* Data;
-	string Etiqueta;
-public:
-	Columna(string Etiqueta) {
-		this->Etiqueta = Etiqueta;
-		Data = new vector<string>;
-	}
-	string getEtiqueta() { return Etiqueta; }
-
-	void AgregarDatos(string Dato) {
-		Data->push_back(Dato);
-	}
-
-	vector<string>* getDatos() {
-		return Data;
-	}
-
-	void setDatos(vector<string>* ptr) {
-		Data = ptr;
-	}
-};
-
-typedef map<string, Columna*> Colmap;
-
-class Fila
-{
-	int id;
-
-public:
-	Fila(int id): id(id) {}
-	string getData(Colmap &Col, string name) {
-		return Col[name]->getDatos()->at(id);
-	}
-	int getID() { return id; }
 };
 
 class DataFrame
@@ -190,6 +198,7 @@ class DataFrame
 	int contColumnas;
 	int contRow;
 	bool isEmpty;
+	Tree<Fila*, string>* T;
 public:
 	
 	DataFrame() {
@@ -285,14 +294,23 @@ public:
 			{
 				cout << Filas->at(j)->getID() << "\t\t\t";
 
-				for (int i = 0; i < 3; i++)
+				if (contColumnas > 3)
 				{
-					cout << Filas->at(j)->getData(Columnas,etiquetas->at(i)) << "\t\t\t";
+					for (int i = 0; i < 4; i++)
+					{
+						cout << Filas->at(j)->getData(Columnas, etiquetas->at(i)) << "\t\t\t";
+					}
+				}
+				else
+				{
+					for (int i = 0; i < contColumnas; i++)
+					{
+						cout << Filas->at(j)->getData(Columnas, etiquetas->at(i)) << "\t\t\t";
+					}
 				}
 				cout << endl;
 			}
 		}
-
 	}
 
 	bool LecturaDatos(string Archivo)
@@ -401,13 +419,12 @@ public:
 		file.close();
 	}
 
-	/*void Index(string Columna) {
-		Tree<Fila*, string>* T = new Tree<Fila*, string>(
-			[=](Fila* R) {return R->getData(Columna); });
-		for (int i = 0; i < Filas->size();i++) {
+	void Index(string _etiqueta) {
+		T = new Tree<Fila*, string>([&](Fila* R) {return R->getData(Columnas, _etiqueta); });
+		for (int i = 1; i < Filas->size();i++) {
 			T->add(Filas->at(i));
 		}
-	}*/
+	}
 
 	bool Comparar(int a, string c1, string c2, int i) {
 		switch (a) {
@@ -659,7 +676,9 @@ void SumarRow() { contRow++; }
 void SumarCols() { contColumnas++; }
 void IniEtiqueta(vector<string>*_etiquetas) { etiquetas = _etiquetas; }
 void setIsEmpty() { isEmpty = false; }
+int getContCols() { return contColumnas; }
 };
+
 
 //////////////////////Listado///////////////////////////
 
@@ -717,11 +736,21 @@ public:
 		Listado->push_back(Listado->at(i)->Filtrar(a, c1, c2, b, c3, c4));
 	}
 
+	void Index(int i, string _etiqueta)
+	{
+		Listado->at(i)->Index(_etiqueta);
+	}
+
 	vector<DataFrame*>* getDFS() {
 		return this->Listado;
 	}
 
 	void OrdenarXAtributo(string B, int n) {
 		Listado->push_back(Listado->at(n)->Ordenar(B));
+	}
+
+	void Seleccionar(int i, vector<string> N)
+	{
+		Listado->push_back(Listado->at(i)->Select(N));
 	}
 };

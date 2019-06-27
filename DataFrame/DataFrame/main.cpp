@@ -12,6 +12,7 @@ void Interacción()
 	Menu(Opcion);
 	string c1, c2, c3 = "", c4 = "";
 	string nombreArchivo;
+	vector<string>ColNombres;
 
 	while (true)
 	{
@@ -114,9 +115,34 @@ void Interacción()
 			} while (!(Indice >= 0 &&Indice < Listado->getsize()));
 			Listado->OrdenarXAtributo(Busqueda, Indice);
 			break;
+		
+		case 6:
+			
+			int Ncolumnas;
+			do {
+				cout << "Ingresa el Data Frame: "; cin >> Indice;
+			} while (!(Indice >= 0 && Indice < Listado->getsize()));
+			do {
+				cout << "Elige el número de columnas que quieres mostrar: ";
+				cin >> Ncolumnas;
+			} while (!(Ncolumnas > 0 && Ncolumnas <= Listado->getDFS()->at(Indice)->getContCols()));
+			for (int i = 0; i < Ncolumnas; i++) {
+				cin >> c1;
+				ColNombres.push_back(c1);
+			}
+			Listado->Seleccionar(Indice, ColNombres);
+			break;
+
+		case 7: 
+			do {
+				cout << "Ingrese el Data Frame: ";cin >> Indice;
+			} while ((!(Indice >= 0) && Indice < Listado->getsize()));
+			cout << "Ingrese la Columna en la que quiere buscar: "; cin >> Busqueda;
+			Listado->Index(Indice, Busqueda);
+			break;
 		default:
 			break;
-			}
+		}
 			
 		if (Opcion == 27) break;
 		
