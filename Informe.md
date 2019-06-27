@@ -85,5 +85,5 @@ Dichas tareas son las siguientes:
     
     ## Conclusiones
 
-<p style="text-align: justify;">En conclusión, con este proyecto pudimos conocer muy por encima el tema de base de datos, lo cual nos ayudará más adelante en nuestra carrera. Así mismo, aprendimos a utilizar la herramienta de GitHub que nos facilitó demasiado el trabajo. El proyecto resultó siendo un éxito y logró solucionar el problema.
+<p style="text-align: justify;">En conclusión, con este proyecto pudimos conocer muy por encima el tema de base de datos, lo cual nos ayudará más adelante en nuestra carrera. Así mismo, aprendimos a utilizar la herramienta de GitHub que nos facilitó de una manera increible el trabajo en equipo. El proyecto resultó siendo un éxito y logró solucionar el problema graicas a su funcionalidad.
 
